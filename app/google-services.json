@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "524497975373",
+    "project_id": "segundo-electro",
+    "storage_bucket": "segundo-electro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524497975373:android:22fc02c72adca5deb4c404",
+        "android_client_info": {
+          "package_name": "com.example.segundo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524497975373-lenb7vi0lo12ikj6qtgufios26t3vbk0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANXn976qDVUTBiAjoPfy4Mbt5-cuzVdaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524497975373-lenb7vi0lo12ikj6qtgufios26t3vbk0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
