@@ -37,9 +37,9 @@
 
     <Button
         android:id="@+id/buttonInicio"
-        android:layout_width="126dp"
+        android:layout_width="146dp"
         android:layout_height="58dp"
-        android:text="Button"
+        android:text="INICIAR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/contrasenaId"
@@ -47,9 +47,9 @@
 
     <Button
         android:id="@+id/buttonRegistro"
-        android:layout_width="126dp"
+        android:layout_width="146dp"
         android:layout_height="58dp"
-        android:text="Button"
+        android:text="REGISTRARSE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.987"
