@@ -1,9 +1,16 @@
 package com.example.segundo
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.widget.Button
 import android.widget.Toast
+import androidx.core.graphics.red
+import androidx.core.widget.addTextChangedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,12 +21,53 @@ class MainActivity : AppCompatActivity() {
     private var database = FirebaseDatabase.getInstance()
     private var conexion = database.reference
 
+    var correo = false
+    var pasword = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         autentication = FirebaseAuth.getInstance()
+        configurarBotones(buttonInicio,"INICIAR")
+        configurarBotones(buttonRegistro,"REGISTRARSE")
+
+        correoid.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.i("begoskndksjnj", "not overide")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                buttonInicio.isEnabled = correoid.length() >= 8
+               // buttonRegistro.isEnabled = contrasenaId.length() > 5
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                buttonRegistro.isEnabled = contrasenaId.length() > 5
+                Log.i("begoskndksjnj", "not overide")
+            }
+
+        })
+
+        contrasenaId.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.i("begoskndksjnj", "not overide")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                buttonRegistro.isEnabled = contrasenaId.length() > 5
+              //  buttonInicio.isEnabled = correoid.length() >= 8
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                buttonInicio.isEnabled = correoid.length() >= 8
+                Log.i("begoskndksjnj", "not overide")
+            }
+
+        })
+
 
 
 
@@ -37,6 +85,13 @@ class MainActivity : AppCompatActivity() {
             inicio(email,pasword)
         }
         
+    }
+
+    fun verificar() {
+
+            buttonRegistro.isEnabled
+            buttonInicio.isEnabled
+
     }
 
     private fun inicio(email: String, pasword: String) {
@@ -68,6 +123,17 @@ class MainActivity : AppCompatActivity() {
             }
             
         }
+    }
+
+    private fun configurarBotones(miBoton: Button, titulo: String) {
+       // miBoton.setBackgroundColor(Color.BLUE)
+      //  miBoton.setTextColor(Color.WHITE)
+         miBoton.shadowColor.red
+        miBoton.setText(titulo)
+        miBoton.isEnabled = false
+
+
+
     }
     
     

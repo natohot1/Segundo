@@ -117,7 +117,7 @@
 
     <Button
         android:id="@+id/btnGuardar"
-        android:layout_width="277dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
@@ -127,31 +127,29 @@
 
     <Button
         android:id="@+id/btnGuardados"
-        android:layout_width="130dp"
+        android:layout_width="140dp"
         android:layout_height="48dp"
-        android:layout_marginStart="28dp"
         android:text="GUARDADOS"
+        android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/btnGuardar"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btnFotos"
-        android:layout_width="124dp"
+        android:layout_width="140dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="28dp"
         android:text="FOTOGRAFIAR"
+        android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/btnGuardar"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.984"
-        app:layout_constraintStart_toEndOf="@+id/btnGuardados"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btn2Imagen"
-        android:layout_width="237dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
