@@ -2,4 +2,6 @@
     <string name="app_name">Segundo</string>
     <string name="email">correo electronico</string>
     <string name="contraseña">contraseña</string>
+    <string name="registrarse">REGISTRARSE</string>
+    <string name="fotografiar">FOTOGRAFIAR</string>
 </resources>

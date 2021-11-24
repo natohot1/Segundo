@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/correoid"
-        android:layout_width="326dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:ems="10"
         android:hint="@string/email"
@@ -16,14 +16,14 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.003" />
 
     <EditText
         android:id="@+id/contrasenaId"
-        android:layout_width="326dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:ems="10"
         android:hint="@string/contraseña"
@@ -37,25 +37,28 @@
 
     <Button
         android:id="@+id/buttonInicio"
-        android:layout_width="146dp"
-        android:layout_height="58dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
         android:text="INICIAR"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/contrasenaId"
-        app:layout_constraintVertical_bias="0.085" />
+        app:layout_constraintVertical_bias="0.08" />
 
     <Button
         android:id="@+id/buttonRegistro"
-        android:layout_width="146dp"
-        android:layout_height="58dp"
-        android:text="REGISTRARSE"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="@string/registrarse"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.987"
-        app:layout_constraintStart_toEndOf="@+id/buttonInicio"
+        app:layout_constraintStart_toStartOf="@+id/guideline14"
         app:layout_constraintTop_toBottomOf="@+id/contrasenaId"
-        app:layout_constraintVertical_bias="0.084" />
+        app:layout_constraintVertical_bias="0.081" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -77,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.14" />
+        app:layout_constraintGuide_percent="0.13953489" />
 
     <TextView
         android:id="@+id/textView"
@@ -90,6 +93,20 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
