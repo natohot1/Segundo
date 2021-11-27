@@ -4,4 +4,6 @@
     <string name="contraseña">contraseña</string>
     <string name="registrarse">REGISTRARSE</string>
     <string name="fotografiar">FOTOGRAFIAR</string>
+    <string name="historia">h. clinica</string>
+    <string name="nombre">nombre del paciente</string>
 </resources>

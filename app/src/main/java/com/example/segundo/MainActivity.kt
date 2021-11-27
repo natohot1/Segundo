@@ -39,12 +39,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                buttonInicio.isEnabled = correoid.length() >= 8
-               // buttonRegistro.isEnabled = contrasenaId.length() > 5
+                if(correoid.length() > 7 && contrasenaId.length() >5){
+                    buttonInicio.isEnabled = true
+                    buttonRegistro.isEnabled = true
+                }else{
+                    buttonInicio.isEnabled = false
+                    buttonRegistro.isEnabled = false
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
-                buttonRegistro.isEnabled = contrasenaId.length() > 5
                 Log.i("begoskndksjnj", "not overide")
             }
 
@@ -56,13 +60,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                buttonRegistro.isEnabled = contrasenaId.length() > 5
-              //  buttonInicio.isEnabled = correoid.length() >= 8
+              if(correoid.length() > 7 && contrasenaId.length() >5){
+                  buttonInicio.isEnabled = true
+                  buttonRegistro.isEnabled = true
+              }else{
+                  buttonInicio.isEnabled = false
+                  buttonRegistro.isEnabled = false
+              }
+                Log.i("begoskndksjnj", "not overide")
 
             }
 
             override fun afterTextChanged(s: Editable?) {
-                buttonInicio.isEnabled = correoid.length() >= 8
+               // buttonInicio.isEnabled = correoid.length() >= 8
                 Log.i("begoskndksjnj", "not overide")
             }
 
@@ -126,14 +136,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
-       // miBoton.setBackgroundColor(Color.BLUE)
-      //  miBoton.setTextColor(Color.WHITE)
-         miBoton.shadowColor.red
+        miBoton.setBackgroundColor(Color.BLUE)
+       // miBoton.setTextColor(Color.WHITE)
+        miBoton.shadowColor.red
         miBoton.setText(titulo)
         miBoton.isEnabled = false
-
-
-
     }
     
     
