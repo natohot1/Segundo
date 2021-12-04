@@ -2,7 +2,9 @@ package com.example.segundo
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.pm.LauncherActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -16,16 +18,23 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.core.graphics.red
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_segunda.*
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 private const val RECUEST_CAMARA = 1
 
 class SegundaActivity : AppCompatActivity() {
+
     var foto: Bitmap? = null
     var foto1: Bitmap? = null
     var foto2: Bitmap? = null
+    var foUri3:Uri? = null
+    var foUri4:Uri? = null
+
     private var fotoboolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +100,62 @@ class SegundaActivity : AppCompatActivity() {
         btnFotos.setOnClickListener {
             abreCamara_Click()
         }
+        btnGuardar.setOnClickListener {
+            guardarDatosFirebas()
+        }
     }
+
+    private fun guardarDatosFirebas() {
+        val filename = UUID.randomUUID().toString()
+        val ref = FirebaseStorage.getInstance().getReference("/imagenes/$filename")
+        ref.putFile(foUri3!!)
+            .addOnSuccessListener {
+                Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
+            }
+        val filename2 = UUID.randomUUID().toString()
+        val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$filename2")
+        ref2.putFile(foUri4!!)
+            .addOnSuccessListener {
+                Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
+            }
+
+
+
+
+    }
+
+    private fun guardarfotoStorege(miUri:Uri) {
+        val filename = UUID.randomUUID().toString()
+        val ref = FirebaseStorage.getInstance().getReference("/imagenes/$filename")
+        ref.putFile(miUri!!)
+            .addOnSuccessListener {
+                Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
+            }
+
+    }
+
+    val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(fotoboolean) {
+            val bitmap = it?.data?.extras?.get("data") as Bitmap
+            foUri3 = getImageUriFromBitmap(this,bitmap)
+            imagenPrimera.setImageURI(foUri3)
+            fotoboolean = false
+        }else{
+            val bitmap = it?.data?.extras?.get("data") as Bitmap
+            foUri4 = getImageUriFromBitmap(this,bitmap)
+            imagenSegunda.setImageURI(foUri4)
+            fotoboolean = true
+        }
+    }
+
+    fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri{
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path.toString())
+    }
+
+
 
     //detectamos el click para abrir camara
     private fun abreCamara_Click(){
@@ -110,18 +174,18 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun abreCamara(){
-        val value = ContentValues()
-        value.put(MediaStore.Images.Media.TITLE, "Nueva imagen")
+       // val value = ContentValues()
+       // value.put(MediaStore.Images.Media.TITLE, "Nueva imagen")
         val camaraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        camaraIntent.putExtra(MediaStore.EXTRA_OUTPUT,foto)
-        startActivityForResult(camaraIntent, RECUEST_CAMARA)
+       // camaraIntent.putExtra(MediaStore.EXTRA_OUTPUT,foto)
+      //  startActivityForResult(camaraIntent, RECUEST_CAMARA)
+        getAction.launch(camaraIntent)
 
     }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
         miBoton.setBackgroundColor(Color.BLUE)
        // miBoton.setTextColor(Color.WHITE)
-        miBoton.shadowColor.red
         miBoton.setText(titulo)
         miBoton.isEnabled = false
     }
@@ -142,23 +206,4 @@ class SegundaActivity : AppCompatActivity() {
 
         }
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (fotoboolean) {
-            if (resultCode == Activity.RESULT_OK && requestCode == RECUEST_CAMARA) {
-                foto1 = data?.getParcelableExtra<Bitmap>("data")
-                imagenPrimera.setImageBitmap(foto1)
-                fotoboolean = false
-            }
-        } else {
-            if (resultCode == Activity.RESULT_OK && requestCode == RECUEST_CAMARA) {
-                foto2 = data?.getParcelableExtra<Bitmap>("data")
-                imagenSegunda.setImageBitmap(foto2)
-                fotoboolean = true
-            }
-        }
-    }
-
-
 }

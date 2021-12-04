@@ -9,8 +9,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.core.graphics.red
-import androidx.core.widget.addTextChangedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
@@ -107,7 +105,6 @@ class MainActivity : AppCompatActivity() {
     private fun inicio(email: String, pasword: String) {
         autentication!!.signInWithEmailAndPassword(email,pasword).addOnCompleteListener {
             if (it.isSuccessful){
-                val idUser = FirebaseAuth.getInstance().currentUser!!.uid
                 Toast.makeText(applicationContext, "Has Iniciado sesion", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this,SegundaActivity::class.java)
                 intent.putExtra("email",email)
@@ -121,7 +118,6 @@ class MainActivity : AppCompatActivity() {
     private fun login(email: String, pasword: String){
         autentication!!.createUserWithEmailAndPassword(email,pasword).addOnCompleteListener(this){ task ->
             if (task.isSuccessful){
-                val Uid = FirebaseAuth.getInstance().currentUser!!.uid
                 Toast.makeText(applicationContext, "Registrado", Toast.LENGTH_SHORT).show()
               //  conexion.child("users").child(Uid).setValue(Usuarios(user = String(),email,Uid))
                 val intent = Intent(this,SegundaActivity::class.java)
@@ -138,7 +134,7 @@ class MainActivity : AppCompatActivity() {
     private fun configurarBotones(miBoton: Button, titulo: String) {
         miBoton.setBackgroundColor(Color.BLUE)
        // miBoton.setTextColor(Color.WHITE)
-        miBoton.shadowColor.red
+      //  miBoton.shadowColor.red
         miBoton.setText(titulo)
         miBoton.isEnabled = false
     }
