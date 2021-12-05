@@ -8,4 +8,4 @@ class Paciente(
     var imagenECG: String,
     var imagenECG2: String,
     var nombre: String
-) 
+)

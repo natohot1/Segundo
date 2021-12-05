@@ -1,5 +1,6 @@
 package com.example.segundo
 
+import Paciente
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
@@ -7,6 +8,7 @@ import android.content.Intent
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -19,10 +21,13 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_segunda.*
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val RECUEST_CAMARA = 1
@@ -35,10 +40,17 @@ class SegundaActivity : AppCompatActivity() {
     var foUri3:Uri? = null
     var foUri4:Uri? = null
 
+    var datos: Bundle? = null
+    var correo:String? = null
+
     private var fotoboolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_segunda)
+
+        val objetoInt: Intent=intent
+
+        correo = objetoInt.getStringExtra("email")
 
         configurarBotones(btnFotos, "FOTOGRAFIAR")
         configurarBotones(btnGuardados,"PREVIOS")
@@ -118,6 +130,24 @@ class SegundaActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
             }
+        val sdf = SimpleDateFormat("dd/M/yyyy hh.mm.ss")
+        val mifecha = sdf.format(Date())
+
+
+        val grupo = editHistoria.text.toString()
+        val database = FirebaseDatabase.getInstance().reference
+        val paciente = Paciente(correo!!,mifecha,filename,ref.toString(),ref2.toString(),editNombre.text.toString())
+        database.child(grupo).setValue(paciente).addOnCompleteListener {
+            editNombre.text.clear()
+            editHistoria.text.clear()
+            Toast.makeText(this,"Guardado", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(this,"No se pudo guardar", Toast.LENGTH_SHORT).show()
+        }
+
+
+
+
 
 
 
