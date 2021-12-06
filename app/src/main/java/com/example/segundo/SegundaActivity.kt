@@ -78,8 +78,8 @@ class SegundaActivity : AppCompatActivity() {
         configurarBotones(btnGuardados,"PREVIOS")
         configurarBotones(btnGuardar,"GUARDAR DATOS")
         configurarBotones(btnSalir,"SALIR")
-        imagenPrimera.setImageResource(R.drawable.ecg)
-        imagenSegunda.setImageResource(R.drawable.ecg)
+        imagenPrimera.setImageResource(R.drawable.ecgnegro)
+        imagenSegunda.setImageResource(R.drawable.ecgnegro)
 
         editHistoria.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
