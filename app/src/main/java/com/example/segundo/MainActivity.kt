@@ -1,26 +1,22 @@
 package com.example.segundo
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
-data class Usuarios (val user:String, val email:String, val id:String)
 class MainActivity : AppCompatActivity() {
 
     private var autentication : FirebaseAuth?=null
-    private var database = FirebaseDatabase.getInstance()
-    private var conexion = database.reference
-
-    var correo = false
-    var pasword = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,31 +72,31 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+        session()
+
 
 
 
         //  FUNCION DE REGISTRO
         buttonRegistro.setOnClickListener {
-            val email = correoid.text.toString()
-            val pasword = contrasenaId.text.toString()
-            login(email,pasword)
+            if(correoid.text.toString() != "" && contrasenaId.text.toString() != "") {
+                val email = correoid.text.toString().trim()
+                val pasword = contrasenaId.text.toString().trim()
+                login(email, pasword)
+            }
         }
 
         // LLAMA A INCIO DE SESION
         buttonInicio.setOnClickListener {
-            val email = correoid.text.toString()
-            val pasword = contrasenaId.text.toString()
-            inicio(email,pasword)
+            if(correoid.text.toString() != "" && contrasenaId.text.toString() != "") {
+                val email = correoid.text.toString().trim()
+                val pasword = contrasenaId.text.toString().trim()
+                inicio(email, pasword)
+            }
         }
         
     }
 
-    fun verificar() {
-
-            buttonRegistro.isEnabled
-            buttonInicio.isEnabled
-
-    }
 
     private fun inicio(email: String, pasword: String) {
         autentication!!.signInWithEmailAndPassword(email,pasword).addOnCompleteListener {
@@ -119,10 +115,7 @@ class MainActivity : AppCompatActivity() {
         autentication!!.createUserWithEmailAndPassword(email,pasword).addOnCompleteListener(this){ task ->
             if (task.isSuccessful){
                 Toast.makeText(applicationContext, "Registrado", Toast.LENGTH_SHORT).show()
-              //  conexion.child("users").child(Uid).setValue(Usuarios(user = String(),email,Uid))
-                val intent = Intent(this,SegundaActivity::class.java)
-                intent.putExtra("email",email)
-                startActivity(intent)
+                aSegunda(email)
                 finish()
             }else{
                 Toast.makeText(applicationContext, "Ha fallado el Registro", Toast.LENGTH_SHORT).show()
@@ -130,13 +123,34 @@ class MainActivity : AppCompatActivity() {
             
         }
     }
+    private fun aSegunda(email: String){
+        val intent = Intent(this,SegundaActivity::class.java)
+        intent.putExtra("email",email)
+        startActivity(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        outLayout.visibility = View.VISIBLE
+    }
+
+    private fun session(){
+        val prefs: SharedPreferences = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE)
+        val correoSha:String?  = prefs.getString("correo",null)
+        if(correoSha != null){
+            outLayout.visibility = View.INVISIBLE
+            aSegunda(correoSha)
+
+
+        }
+    }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
         miBoton.setBackgroundColor(Color.BLUE)
-       // miBoton.setTextColor(Color.WHITE)
+        miBoton.setTextColor(Color.WHITE)
       //  miBoton.shadowColor.red
-        miBoton.setText(titulo)
-        miBoton.isEnabled = false
+        miBoton.text = titulo
+       // miBoton.isEnabled = false
     }
     
     

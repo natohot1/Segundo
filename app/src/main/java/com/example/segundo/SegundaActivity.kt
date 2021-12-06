@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -18,12 +19,16 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.auth.User
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.rpc.context.AttributeContext
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_segunda.*
 import java.io.ByteArrayOutputStream
@@ -33,14 +38,9 @@ import java.util.*
 private const val RECUEST_CAMARA = 1
 
 class SegundaActivity : AppCompatActivity() {
-
-    var foto: Bitmap? = null
-    var foto1: Bitmap? = null
-    var foto2: Bitmap? = null
     var foUri3:Uri? = null
     var foUri4:Uri? = null
 
-    var datos: Bundle? = null
     var correo:String? = null
 
     private var fotoboolean = true
@@ -48,14 +48,38 @@ class SegundaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_segunda)
 
-        val objetoInt: Intent=intent
+        iniciarComponentes()
 
+        btnFotos.setOnClickListener {
+            if(editHistoria.text.toString() != "" && editNombre.text.toString() != ""){
+            abreCamara_Click()}
+        }
+        btnGuardar.setOnClickListener {
+            if(editHistoria.text.toString() != "" && editNombre.text.toString() != ""){
+            guardarDatosFirebas()}
+        }
+        btnSalir.setOnClickListener {
+            val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
+            prefs?.clear()
+            val apply = prefs?.apply()
+            FirebaseAuth.getInstance().signOut()
+            onBackPressed()
+        }
+    }
+
+    private fun iniciarComponentes() {
+        val objetoInt: Intent=intent
         correo = objetoInt.getStringExtra("email")
+        val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
+        prefs?.putString("correo",correo)
+        prefs?.apply()
 
         configurarBotones(btnFotos, "FOTOGRAFIAR")
         configurarBotones(btnGuardados,"PREVIOS")
         configurarBotones(btnGuardar,"GUARDAR DATOS")
         configurarBotones(btnSalir,"SALIR")
+        imagenPrimera.setImageResource(R.drawable.ecg)
+        imagenSegunda.setImageResource(R.drawable.ecg)
 
         editHistoria.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -106,18 +130,10 @@ class SegundaActivity : AppCompatActivity() {
             }
 
         })
-
-
-
-        btnFotos.setOnClickListener {
-            abreCamara_Click()
-        }
-        btnGuardar.setOnClickListener {
-            guardarDatosFirebas()
-        }
     }
 
     private fun guardarDatosFirebas() {
+        progressBar.visibility = View.VISIBLE
         val filename = UUID.randomUUID().toString()
         val ref = FirebaseStorage.getInstance().getReference("/imagenes/$filename")
         ref.putFile(foUri3!!)
@@ -133,36 +149,23 @@ class SegundaActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd/M/yyyy hh.mm.ss")
         val mifecha = sdf.format(Date())
 
-
         val grupo = editHistoria.text.toString()
         val database = FirebaseDatabase.getInstance().reference
         val paciente = Paciente(correo!!,mifecha,filename,ref.toString(),ref2.toString(),editNombre.text.toString())
-        database.child(grupo).setValue(paciente).addOnCompleteListener {
+        database.child(grupo).child(filename).setValue(paciente).addOnCompleteListener {
             editNombre.text.clear()
             editHistoria.text.clear()
+            imagenPrimera.setImageResource(R.drawable.ecg)
+            imagenSegunda.setImageResource(R.drawable.ecg)
             Toast.makeText(this,"Guardado", Toast.LENGTH_SHORT).show()
+            progressBar.visibility = View.INVISIBLE
         }.addOnFailureListener {
             Toast.makeText(this,"No se pudo guardar", Toast.LENGTH_SHORT).show()
+            progressBar.visibility = View.INVISIBLE
         }
 
-
-
-
-
-
-
-
     }
 
-    private fun guardarfotoStorege(miUri:Uri) {
-        val filename = UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/imagenes/$filename")
-        ref.putFile(miUri!!)
-            .addOnSuccessListener {
-                Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
-            }
-
-    }
 
     val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(fotoboolean) {
@@ -215,9 +218,9 @@ class SegundaActivity : AppCompatActivity() {
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
         miBoton.setBackgroundColor(Color.BLUE)
-       // miBoton.setTextColor(Color.WHITE)
-        miBoton.setText(titulo)
-        miBoton.isEnabled = false
+        miBoton.setTextColor(Color.WHITE)
+        miBoton.text = titulo
+       // miBoton.isEnabled = false
     }
 
     override fun onRequestPermissionsResult(
