@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -33,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_segunda.*
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.*
 
 private const val RECUEST_CAMARA = 1
@@ -42,6 +44,8 @@ class SegundaActivity : AppCompatActivity() {
     var foUri4:Uri? = null
 
     var correo:String? = null
+
+    private val db = FirebaseFirestore.getInstance()
 
     private var fotoboolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,13 +150,14 @@ class SegundaActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
             }
-        val sdf = SimpleDateFormat("dd/M/yyyy hh.mm.ss")
+        val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
         val mifecha = sdf.format(Date())
+
 
         val grupo = editHistoria.text.toString()
         val database = FirebaseDatabase.getInstance().reference
         val paciente = Paciente(correo!!,mifecha,filename,ref.toString(),ref2.toString(),editNombre.text.toString())
-        database.child(grupo).child(filename).setValue(paciente).addOnCompleteListener {
+        db.collection(grupo).document(mifecha).set(paciente).addOnCompleteListener {
             editNombre.text.clear()
             editHistoria.text.clear()
             imagenPrimera.setImageResource(R.drawable.ecg)

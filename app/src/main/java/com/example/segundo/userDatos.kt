@@ -5,7 +5,7 @@ class Paciente(
     var correo: String,
     var fecha: String,
     var id: String,
-    var imagenECG: String,
-    var imagenECG2: String,
+    var imagenElectro: String,
+    var imagenElectro2: String,
     var nombre: String
 )
