@@ -114,11 +114,11 @@ class MainActivity : AppCompatActivity() {
     private fun login(email: String, pasword: String){
         autentication!!.createUserWithEmailAndPassword(email,pasword).addOnCompleteListener(this){ task ->
             if (task.isSuccessful){
-                Toast.makeText(applicationContext, "Registrado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "SE HA REGISTRADO CORRECTAMENTE", Toast.LENGTH_LONG).show()
                 aSegunda(email)
                 finish()
             }else{
-                Toast.makeText(applicationContext, "Ha fallado el Registro", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Ha fallado el Registro", Toast.LENGTH_LONG).show()
             }
             
         }

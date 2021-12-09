@@ -69,6 +69,16 @@ class SegundaActivity : AppCompatActivity() {
             FirebaseAuth.getInstance().signOut()
             onBackPressed()
         }
+        btnGuardados.setOnClickListener {
+            if (editHistoria.text.toString().length <8 || editHistoria.text.toString().length >8){
+                Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
+                Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_LONG).show()
+            }else{
+                val intent = Intent(this,Tabla::class.java)
+                intent.putExtra("historia",editHistoria.text.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     private fun iniciarComponentes() {
@@ -155,7 +165,6 @@ class SegundaActivity : AppCompatActivity() {
 
 
         val grupo = editHistoria.text.toString()
-        val database = FirebaseDatabase.getInstance().reference
         val paciente = Paciente(correo!!,mifecha,filename,ref.toString(),ref2.toString(),editNombre.text.toString())
         db.collection(grupo).document(mifecha).set(paciente).addOnCompleteListener {
             editNombre.text.clear()
