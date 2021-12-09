@@ -70,7 +70,7 @@ class SegundaActivity : AppCompatActivity() {
             onBackPressed()
         }
         btnGuardados.setOnClickListener {
-            if (editHistoria.text.toString().length <8 || editHistoria.text.toString().length >8){
+            if (editHistoria.text.toString().length <7 || editHistoria.text.toString().length >9){
                 Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
                 Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_LONG).show()
             }else{
@@ -101,7 +101,7 @@ class SegundaActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(editHistoria.length() == 8 && editNombre.length() >4){
+                if(editHistoria.length() == 8 ){
                     btnFotos.isEnabled = true
                     btnGuardar.isEnabled = true
                     btnGuardados.isEnabled = true

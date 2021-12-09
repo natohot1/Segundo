@@ -34,7 +34,9 @@ class Tabla : AppCompatActivity() {
 
         db.collection(historia!!).get().addOnSuccessListener { resultado ->
             for (documento in resultado){
-               // list.add(Paciente($(documento.no)))
+               val nombre = documento.get("nombre")
+                val fecha = documento.get("fecha")
+                val correo = documento.get("correo")
 
             }
         }
