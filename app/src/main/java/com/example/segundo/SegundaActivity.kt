@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,6 +24,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,13 +35,18 @@ import com.google.rpc.context.AttributeContext
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_segunda.*
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
 
 private const val RECUEST_CAMARA = 1
+private lateinit var photoFile: File
+private const val FILE_NAME = "photo.jpg"
 
 class SegundaActivity : AppCompatActivity() {
+
+
     var foUri3:Uri? = null
     var foUri4:Uri? = null
 
@@ -165,7 +172,7 @@ class SegundaActivity : AppCompatActivity() {
 
 
         val grupo = editHistoria.text.toString()
-        val paciente = Paciente(correo!!,mifecha,filename,ref.toString(),ref2.toString(),editNombre.text.toString())
+        val paciente = Paciente(correo!!,mifecha,ref.toString(),ref2.toString(),editNombre.text.toString())
         db.collection(grupo).document(mifecha).set(paciente).addOnCompleteListener {
             editNombre.text.clear()
             editHistoria.text.clear()
@@ -182,15 +189,18 @@ class SegundaActivity : AppCompatActivity() {
 
 
     val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+
         if(fotoboolean) {
-            val bitmap = it?.data?.extras?.get("data") as Bitmap
-            foUri3 = getImageUriFromBitmap(this,bitmap)
-            imagenPrimera.setImageURI(foUri3)
+               val tomarImagen = BitmapFactory.decodeFile(photoFile.absolutePath)
+            foUri3 = getImageUriFromBitmap(this,tomarImagen)
+            imagenPrimera.setImageBitmap(tomarImagen)
+
             fotoboolean = false
         }else{
-            val bitmap = it?.data?.extras?.get("data") as Bitmap
-            foUri4 = getImageUriFromBitmap(this,bitmap)
-            imagenSegunda.setImageURI(foUri4)
+            val tomarImagen = BitmapFactory.decodeFile(photoFile.absolutePath)
+            foUri4 = getImageUriFromBitmap(this,tomarImagen)
+            imagenSegunda.setImageBitmap(tomarImagen)
+
             fotoboolean = true
         }
     }
@@ -221,13 +231,21 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun abreCamara(){
-       // val value = ContentValues()
-       // value.put(MediaStore.Images.Media.TITLE, "Nueva imagen")
-        val camaraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-       // camaraIntent.putExtra(MediaStore.EXTRA_OUTPUT,foto)
-      //  startActivityForResult(camaraIntent, RECUEST_CAMARA)
-        getAction.launch(camaraIntent)
+        val tomarFotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        photoFile = getPhotoFile(FILE_NAME)
+        val fileProvider = FileProvider.getUriForFile(this, "com.example.fileprovider", photoFile)
+        tomarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+        if (tomarFotoIntent.resolveActivity(this.packageManager) != null) {
+            getAction.launch(tomarFotoIntent)
+        }else{
+            Toast.makeText(this, "Camara no accesile", Toast.LENGTH_SHORT).show()
+        }
 
+    }
+
+    private fun getPhotoFile(fileName: String): File {
+        val storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName, "jpg",storageDirectory)
     }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
