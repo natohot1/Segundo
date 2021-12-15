@@ -11,12 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segundo.databinding.ActivityMainBinding
 import com.google.firebase.firestore.*
+import kotlinx.android.synthetic.main.activity_tabla.*
 import org.w3c.dom.Document
 
 class Tabla : AppCompatActivity() {
 
+    lateinit var binding: ActivityMainBinding
+    var list = ArrayList<Paciente>()
 
-    private lateinit var  db : FirebaseFirestore
+
+   // private lateinit var  db : FirebaseFirestore
     private lateinit var  userArrayList: ArrayList<User>
     private lateinit var  myAdapter: MyAdapter
     private lateinit var  recyclerView: RecyclerView
@@ -30,44 +34,32 @@ class Tabla : AppCompatActivity() {
         val objetoInt: Intent =intent
         historia = objetoInt.getStringExtra("historia").toString()
 
-        // instnaciamos datos de usuario
-        var misDatos:Paciente
 
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.setHasFixedSize(true)
+        val db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
-        userArrayList = arrayListOf()
+        var nombre = ""
+        var fecha = ""
+        var correo = ""
 
-        myAdapter = MyAdapter(userArrayList)
 
-        recyclerView.adapter = myAdapter
 
-        EventChangeListener()
 
-        db.collection(historia!!).get().addOnSuccessListener { resultado ->
-            }
+      db.collection(historia!!).get().addOnSuccessListener { resultado ->
+          val datos = resultado
+          for (documento in resultado){
 
-    }
+              nombre = documento.get("nombre").toString()
+              fecha = documento.get("fecha").toString()
+              correo = documento.get("correo").toString()
+              textView3.setText(nombre)
 
-    private fun EventChangeListener(){
-        db = FirebaseFirestore.getInstance()
-        db.collection(historia!!).addSnapshotListener(object : EventListener<QuerySnapshot>{
-            override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?)
-            {
-                if(error != null){
-                    Log.e("Firestore Error", error.message.toString())
-                    return
-                }
-                for(dc : DocumentChange in value?.documentChanges!!){
-                    if (dc.type == DocumentChange.Type.ADDED){
-                        userArrayList.add(dc.document.toObject(User::class.java))
-                    }
-                }
-                myAdapter.notifyDataSetChanged()
-            }
+              textView4.setText(fecha)
+              textView5.setText(correo)
 
-        })
+
+          }
+      }
+        
     }
 
 }
