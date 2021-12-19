@@ -45,9 +45,9 @@ class userListAdapter(private var activity: Activity, private var items: ArrayLi
         var txtFecha: TextView? = null
         var txtEmail: TextView? = null
         init {
-        //    this.txtNombre = row?.findViewById<TextView>(R.id.txtNombre)
-        //    this.txtFecha = row?.findViewById<TextView>(R.id.txtFecha)
-        //    this.txtEmail = row?.findViewById<TextView>(R.id.txtemail)
+            this.txtNombre = row?.findViewById<TextView>(R.id.txtNombre)
+            this.txtFecha = row?.findViewById<TextView>(R.id.txtFecha)
+            this.txtEmail = row?.findViewById<TextView>(R.id.txtemail)
         }
     }
 

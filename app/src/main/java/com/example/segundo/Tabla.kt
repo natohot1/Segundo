@@ -53,6 +53,9 @@ class Tabla : AppCompatActivity() {
 
         val adapter = object: FirestoreRecyclerAdapter<User2, UserViewHolder>(options){
 
+
+
+
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
                 val view: View = LayoutInflater.from(this@Tabla).inflate(R.layout.datoslista,parent, false)
                 return UserViewHolder(view)
@@ -67,10 +70,16 @@ class Tabla : AppCompatActivity() {
                 txCorreo.text = model.correo
 
             }
+
+
+
         }
 
+
             recyclerView.adapter = adapter
+
             recyclerView.layoutManager = LinearLayoutManager(this)
+
 
 
 

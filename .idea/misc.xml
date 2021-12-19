@@ -10,7 +10,10 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_segunda.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_tabla.xml" value="0.37228260869565216" />
+        <entry key="app/src/main/res/layout/activity_tabla2.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_tabla3.xml" value="0.35989583333333336" />
         <entry key="app/src/main/res/layout/datoslista.xml" value="0.396875" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.335" />
         <entry key="app/src/main/res/xml/fileprovider.xml" value="0.37228260869565216" />
         <entry key="app/src/main/res/xml/my_images.xml" value="0.19293478260869565" />
       </map>

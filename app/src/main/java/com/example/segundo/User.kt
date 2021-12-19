@@ -1,3 +1,3 @@
 package com.example.segundo
 
-data class User(var correo:String, var fecha:String,var imagenElectro:String,var imagenElectro2:String, var nombre:String )
+data class User(var nombre:String ?=null, var correo:String ?=null, var fecha:String ?=null,var imagenElectro:String ?=null,var imagenElectro2:String ?=null)

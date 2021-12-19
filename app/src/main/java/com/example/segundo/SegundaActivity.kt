@@ -81,7 +81,7 @@ class SegundaActivity : AppCompatActivity() {
                 Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
                 Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_LONG).show()
             }else{
-                val intent = Intent(this,Tabla::class.java)
+                val intent = Intent(this,Tabla3::class.java)
                 intent.putExtra("historia",editHistoria.text.toString())
                 startActivity(intent)
             }
