@@ -1,12 +1,9 @@
 package com.example.segundo
 
-import Paciente
-import android.app.Activity
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.LauncherActivityInfo
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -26,18 +23,12 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.rpc.context.AttributeContext
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_segunda.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.util.*
 
 private const val RECUEST_CAMARA = 1
@@ -45,12 +36,15 @@ private lateinit var photoFile: File
 private const val FILE_NAME = "photo.jpg"
 
 class SegundaActivity : AppCompatActivity() {
-
-
     var foUri3:Uri? = null
     var foUri4:Uri? = null
+    var fotoURL1:String = ""
+    var fotoURL2:String = ""
 
     var correo:String? = null
+    val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+    val mifecha = sdf.format(Date())
+    var filename:String = ""
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -58,7 +52,9 @@ class SegundaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_segunda)
+        filename = UUID.randomUUID().toString()
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         iniciarComponentes()
 
         btnFotos.setOnClickListener {
@@ -66,8 +62,13 @@ class SegundaActivity : AppCompatActivity() {
             abreCamara_Click()}
         }
         btnGuardar.setOnClickListener {
-            if(editHistoria.text.toString() != "" && editNombre.text.toString() != ""){
-            guardarDatosFirebas()}
+            if(editHistoria.text.toString() != "" && editNombre.text.toString() != "")
+            {
+                previoAguardas()
+                guardarDatosFirebase()
+            }
+            finish()
+            startActivity(intent)
         }
         btnSalir.setOnClickListener {
             val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
@@ -153,40 +154,55 @@ class SegundaActivity : AppCompatActivity() {
         })
     }
 
-    private fun guardarDatosFirebas() {
-        progressBar.visibility = View.VISIBLE
-        val filename = UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/imagenes/$filename")
-        ref.putFile(foUri3!!)
-            .addOnSuccessListener {
-                Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
-            }
-        val filename2 = UUID.randomUUID().toString()
-        val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$filename2")
-        ref2.putFile(foUri4!!)
-            .addOnSuccessListener {
-                Log.d("SegundaActivity","subio imagen: ${it.metadata?.path}")
-            }
-        val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
-        val mifecha = sdf.format(Date())
+    private fun previoAguardas() {
+            progressBar.visibility = View.VISIBLE
+        val nombre1 = filename
 
+          //  val ref = FirebaseStorage.getInstance().getReference("/imagenes/$filename")
+        val ref = FirebaseStorage.getInstance().getReference("/imagenes/$nombre1")
+            ref.putFile(foUri3!!)
+                .addOnSuccessListener {
+                    it.storage.downloadUrl.addOnSuccessListener { dowloadURL ->
+                        fotoURL1 = dowloadURL.toString()
+                    }
+                    Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
+                }
+           // val filename2 = UUID.randomUUID().toString()
+        val nombre2 = filename+"a"
+          //  val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$filename2")
+        val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$nombre2")
 
-        val grupo = editHistoria.text.toString()
-        val paciente = Paciente(correo!!,mifecha,ref.toString(),ref2.toString(),editNombre.text.toString())
-        db.collection(grupo).document(mifecha).set(paciente).addOnCompleteListener {
-            editNombre.text.clear()
-            editHistoria.text.clear()
-            imagenPrimera.setImageResource(R.drawable.ecg)
-            imagenSegunda.setImageResource(R.drawable.ecg)
-            Toast.makeText(this,"Guardado", Toast.LENGTH_SHORT).show()
-            progressBar.visibility = View.INVISIBLE
-        }.addOnFailureListener {
-            Toast.makeText(this,"No se pudo guardar", Toast.LENGTH_SHORT).show()
-            progressBar.visibility = View.INVISIBLE
+            ref2.putFile(foUri4!!)
+                .addOnSuccessListener {
+                    it.storage.downloadUrl.addOnSuccessListener { dowloadURL ->
+                        fotoURL2 = dowloadURL.toString()
+                    }
+                    Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
+
         }
-
     }
 
+    private fun guardarDatosFirebase(){
+            val grupo = editHistoria.text.toString()
+            val user = User(
+                editNombre.text.toString(),
+                mifecha,
+                correo!!,
+                filename
+            )
+            db.collection(grupo).document(mifecha).set(user).addOnCompleteListener {
+                editNombre.text.clear()
+                editHistoria.text.clear()
+                imagenPrimera.setImageResource(R.drawable.ecgnegro)
+                imagenSegunda.setImageResource(R.drawable.ecgnegro)
+                Toast.makeText(this, "Se ha guardado satisfactoriamente", Toast.LENGTH_LONG).show()
+                progressBar.visibility = View.INVISIBLE
+            }.addOnFailureListener {
+                Toast.makeText(this, "No se pudo guardar", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.INVISIBLE
+            }
+
+    }
 
     val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 
@@ -211,8 +227,6 @@ class SegundaActivity : AppCompatActivity() {
         val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
         return Uri.parse(path.toString())
     }
-
-
 
     //detectamos el click para abrir camara
     private fun abreCamara_Click(){

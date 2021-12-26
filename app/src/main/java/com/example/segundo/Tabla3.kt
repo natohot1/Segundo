@@ -1,14 +1,17 @@
 package com.example.segundo
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
+import kotlinx.android.synthetic.main.activity_segunda.*
 
-class Tabla3 : AppCompatActivity() {
+class Tabla3 : AppCompatActivity(),MiAdaptador2.MyOnClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var userArrayList: ArrayList<User>
     private lateinit var miAdaptador2: MiAdaptador2
@@ -21,17 +24,13 @@ class Tabla3 : AppCompatActivity() {
 
         val objetoInt: Intent = intent
         historia = objetoInt.getStringExtra("historia").toString()
-
-
-
-
         recyclerView = findViewById(R.id.recycler3)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
         userArrayList = arrayListOf()
 
-        miAdaptador2 = MiAdaptador2(userArrayList)
+        miAdaptador2 = MiAdaptador2(userArrayList,this@Tabla3)
 
         recyclerView.adapter = miAdaptador2
 
@@ -53,7 +52,13 @@ class Tabla3 : AppCompatActivity() {
                 }
                 miAdaptador2.notifyDataSetChanged()
             }
-
         })
+    }
+
+    override fun OnClick(position: Int) {
+        val ima1 = userArrayList[position].nombreElectro
+        val inte = Intent(this,Imagenes::class.java)
+        inte.putExtra("imagen1",ima1)
+        startActivity(inte)
     }
 }
