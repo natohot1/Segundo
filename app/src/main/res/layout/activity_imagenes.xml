@@ -11,6 +11,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:foregroundGravity="center"
+            />
+
+        <TextView
+            android:id="@+id/txtPreparando"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Preparando...."
+            android:textAlignment="center"
+            />
+
         <ImageView
             android:id="@+id/imageVPica1"
             android:layout_width="match_parent"
@@ -25,13 +42,13 @@
             android:id="@+id/imageVPica2"
             android:layout_width="match_parent"
             android:layout_height="700dp"
-            android:contentDescription="TODO"
             android:rotation="90"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scrollView2"
             tools:srcCompat="@tools:sample/avatars" />
+
 
     </LinearLayout>
 

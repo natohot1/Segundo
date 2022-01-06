@@ -49,26 +49,39 @@ class SegundaActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
 
     private var fotoboolean = true
+    private var btnFotoboolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_segunda)
+        title = "ELECTROCARDIOGRAMAS"
+
         filename = UUID.randomUUID().toString()
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         iniciarComponentes()
 
         btnFotos.setOnClickListener {
-            if(editHistoria.text.toString() != "" && editNombre.text.toString() != ""){
-            abreCamara_Click()}
+            if(editHistoria.text.length < 8){
+                Toast.makeText(applicationContext, "H. CLINICA DEBE TENER 8 DIGITOS", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+                }
+            if(editNombre.text.length < 4){
+                Toast.makeText(applicationContext, "REVISE NOMBRE", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            abreCamara_Click()
         }
         btnGuardar.setOnClickListener {
-            if(editHistoria.text.toString() != "" && editNombre.text.toString() != "")
+            if(btnFotoboolean)
             {
-                previoAguardas()
+                Toast.makeText(this, "Debes tomar las dos IMAGENES", Toast.LENGTH_LONG).show()
+            }else{
+                previoGuardar()
                 guardarDatosFirebase()
+                finish()
+                startActivity(intent)
             }
-            finish()
-            startActivity(intent)
+
         }
         btnSalir.setOnClickListener {
             val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
@@ -78,7 +91,7 @@ class SegundaActivity : AppCompatActivity() {
             onBackPressed()
         }
         btnGuardados.setOnClickListener {
-            if (editHistoria.text.toString().length <7 || editHistoria.text.toString().length >9){
+            if (editHistoria.text.length <8 ){
                 Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
                 Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_LONG).show()
             }else{
@@ -102,63 +115,11 @@ class SegundaActivity : AppCompatActivity() {
         configurarBotones(btnSalir,"SALIR")
         imagenPrimera.setImageResource(R.drawable.ecgnegro)
         imagenSegunda.setImageResource(R.drawable.ecgnegro)
-
-        editHistoria.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.i("begoskndksjnj", "not overide")
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(editHistoria.length() == 8 ){
-                    btnFotos.isEnabled = true
-                    btnGuardar.isEnabled = true
-                    btnGuardados.isEnabled = true
-                    btnSalir.isEnabled = true
-                }else{
-                    btnFotos.isEnabled = false
-                    btnGuardar.isEnabled = false
-                    btnGuardados.isEnabled = false
-                    btnSalir.isEnabled = true
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                Log.i("begoskndksjnj", "not overide")
-            }
-
-        })
-
-        editNombre.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.i("begoskndksjnj", "not overide")
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(editHistoria.length() == 8 && editNombre.length() >4){
-                    btnFotos.isEnabled = true
-                    btnGuardar.isEnabled = true
-                    btnGuardados.isEnabled = true
-                    btnSalir.isEnabled = true
-                }else{
-                    btnFotos.isEnabled = false
-                    btnGuardar.isEnabled = false
-                    btnGuardados.isEnabled = false
-                    btnSalir.isEnabled = true
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                Log.i("begoskndksjnj", "not overide")
-            }
-
-        })
     }
 
-    private fun previoAguardas() {
+    private fun previoGuardar() {
             progressBar.visibility = View.VISIBLE
         val nombre1 = filename
-
-          //  val ref = FirebaseStorage.getInstance().getReference("/imagenes/$filename")
         val ref = FirebaseStorage.getInstance().getReference("/imagenes/$nombre1")
             ref.putFile(foUri3!!)
                 .addOnSuccessListener {
@@ -167,18 +128,14 @@ class SegundaActivity : AppCompatActivity() {
                     }
                     Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
                 }
-           // val filename2 = UUID.randomUUID().toString()
         val nombre2 = filename+"a"
-          //  val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$filename2")
         val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$nombre2")
-
             ref2.putFile(foUri4!!)
                 .addOnSuccessListener {
                     it.storage.downloadUrl.addOnSuccessListener { dowloadURL ->
                         fotoURL2 = dowloadURL.toString()
                     }
                     Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
-
         }
     }
 
@@ -200,6 +157,8 @@ class SegundaActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 Toast.makeText(this, "No se pudo guardar", Toast.LENGTH_SHORT).show()
                 progressBar.visibility = View.INVISIBLE
+            }.addOnFailureListener {
+
             }
 
     }
@@ -210,14 +169,13 @@ class SegundaActivity : AppCompatActivity() {
                val tomarImagen = BitmapFactory.decodeFile(photoFile.absolutePath)
             foUri3 = getImageUriFromBitmap(this,tomarImagen)
             imagenPrimera.setImageBitmap(tomarImagen)
-
             fotoboolean = false
         }else{
             val tomarImagen = BitmapFactory.decodeFile(photoFile.absolutePath)
             foUri4 = getImageUriFromBitmap(this,tomarImagen)
             imagenSegunda.setImageBitmap(tomarImagen)
-
             fotoboolean = true
+            btnFotoboolean = false
         }
     }
 
@@ -266,7 +224,6 @@ class SegundaActivity : AppCompatActivity() {
         miBoton.setBackgroundColor(Color.BLUE)
         miBoton.setTextColor(Color.WHITE)
         miBoton.text = titulo
-       // miBoton.isEnabled = false
     }
 
     override fun onRequestPermissionsResult(
