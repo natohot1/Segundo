@@ -106,6 +106,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this,SegundaActivity::class.java)
                 intent.putExtra("email",email)
                 startActivity(intent)
+                finish()
             }else{
                 Toast.makeText(applicationContext, "Ha fallado, no se pudo iniciar", Toast.LENGTH_SHORT).show()
             }
@@ -128,6 +129,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this,SegundaActivity::class.java)
         intent.putExtra("email",email)
         startActivity(intent)
+        finish()
     }
 
     override fun onStart() {

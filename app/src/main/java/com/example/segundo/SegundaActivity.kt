@@ -78,7 +78,6 @@ class SegundaActivity : AppCompatActivity() {
             }else{
                 previoGuardar()
                 guardarDatosFirebase()
-                finish()
                 startActivity(intent)
             }
 
@@ -98,6 +97,7 @@ class SegundaActivity : AppCompatActivity() {
                 val intent = Intent(this,Tabla3::class.java)
                 intent.putExtra("historia",editHistoria.text.toString())
                 startActivity(intent)
+                editHistoria.setText("")
             }
         }
     }
