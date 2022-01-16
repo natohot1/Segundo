@@ -87,12 +87,13 @@ class SegundaActivity : AppCompatActivity() {
             prefs?.clear()
             val apply = prefs?.apply()
             FirebaseAuth.getInstance().signOut()
+            Toast.makeText(this, "HAS SALIDO DE ECG+", Toast.LENGTH_LONG).show()
             onBackPressed()
         }
         btnGuardados.setOnClickListener {
             if (editHistoria.text.length <8 ){
                 Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
-                Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_SHORT).show()
             }else{
                 val intent = Intent(this,Tabla3::class.java)
                 intent.putExtra("historia",editHistoria.text.toString())
@@ -170,11 +171,13 @@ class SegundaActivity : AppCompatActivity() {
             foUri3 = getImageUriFromBitmap(this,tomarImagen)
             imagenPrimera.setImageBitmap(tomarImagen)
             fotoboolean = false
+            btnFotos.setText("SEG FOTO")
         }else{
             val tomarImagen = BitmapFactory.decodeFile(photoFile.absolutePath)
             foUri4 = getImageUriFromBitmap(this,tomarImagen)
             imagenSegunda.setImageBitmap(tomarImagen)
             fotoboolean = true
+            btnFotos.isEnabled=false
             btnFotoboolean = false
         }
     }

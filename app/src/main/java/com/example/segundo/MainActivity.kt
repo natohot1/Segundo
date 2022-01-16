@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        title="PERPETUO SOCORRO"
+
         autentication = FirebaseAuth.getInstance()
         configurarBotones(buttonInicio,"INICIAR")
         configurarBotones(buttonRegistro,"REGISTRARSE")

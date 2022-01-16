@@ -17,6 +17,8 @@ class Imagenes : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_imagenes)
 
+        title="ELECTROCARDIOGRAMAS"
+
         progressBar2.visibility = View.VISIBLE
 
         val storage = Firebase.storage

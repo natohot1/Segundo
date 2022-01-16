@@ -20,6 +20,8 @@ class Tabla3 : AppCompatActivity(),MiAdaptador2.MyOnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tabla3)
 
+        title="ELECTROCARDIOGRAMAS"
+
         val objetoInt: Intent = intent
         historia = objetoInt.getStringExtra("historia").toString()
         recyclerView = findViewById(R.id.recycler3)

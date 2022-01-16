@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Segundo</string>
+    <string name="app_name">ECG+</string>
     <string name="email">correo electronico</string>
     <string name="contraseña">contraseña</string>
     <string name="registrarse">REGISTRARSE</string>
