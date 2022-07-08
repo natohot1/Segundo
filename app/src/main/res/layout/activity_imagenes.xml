@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Imagenes">
+    tools:context=".Imagenes"
+    tools:ignore="SpeakableTextPresentCheck">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:foregroundGravity="center"
-            />
-
-        <TextView
-            android:id="@+id/txtPreparando"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Preparando...."
-            android:textAlignment="center"
-            />
 
         <ImageView
             android:id="@+id/imageVPica1"
@@ -51,8 +36,6 @@
 
 
     </LinearLayout>
-
-
 
 
 </ScrollView>

@@ -8,12 +8,30 @@
     android:background="@color/rosa_electro"
     tools:context=".SplashScreenActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/miicono"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="103dp"
+        android:layout_marginEnd="62dp"
+        android:layout_marginBottom="20dp"
+        android:text="FELIX ALVAREZ TELLEZ\n DESARROLLADOR\nSOFTWARE MEDICO"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:src="@drawable/ecgazul"
         android:id="@+id/miicono"
+        android:layout_width="329dp"
+        android:layout_height="292dp"
         android:layout_centerInParent="true"
-       />
+        android:src="@drawable/ecg_prof_seg"
+        app:srcCompat="@drawable/ecgazul0" />
+
 
 </RelativeLayout>

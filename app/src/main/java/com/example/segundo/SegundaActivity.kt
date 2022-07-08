@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -14,22 +12,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_segunda.*
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 private const val RECUEST_CAMARA = 1
 private lateinit var photoFile: File
@@ -41,12 +40,20 @@ class SegundaActivity : AppCompatActivity() {
     var fotoURL1:String = ""
     var fotoURL2:String = ""
 
+    var ur1: String = ""
+    var ur2: String? = ""
+
     var correo:String? = null
     val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
     val mifecha = sdf.format(Date())
     var filename:String = ""
 
+    var mini:File? = null
+
+
     private val db = FirebaseFirestore.getInstance()
+
+
 
     private var fotoboolean = true
     private var btnFotoboolean = true
@@ -72,13 +79,19 @@ class SegundaActivity : AppCompatActivity() {
             abreCamara_Click()
         }
         btnGuardar.setOnClickListener {
-            if(btnFotoboolean)
-            {
+            if(btnFotoboolean) {
                 Toast.makeText(this, "Debes tomar las dos IMAGENES", Toast.LENGTH_LONG).show()
             }else{
-                previoGuardar()
-                guardarDatosFirebase()
-                startActivity(intent)
+                previoGuardar() { eventPost ->
+
+                    if (eventPost.isSuccess) {
+                        guardarDatosFirebase(eventPost.photoUrl!!, eventPost.photoUrl1!!)
+                        startActivity(intent)
+
+
+                    }
+                }
+
             }
 
         }
@@ -103,6 +116,17 @@ class SegundaActivity : AppCompatActivity() {
         }
     }
 
+    private fun createImageFile(): File {
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("temp_image", "jpg", storageDir)
+    }
+
+    private fun createImageFile2(): File {
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("temp_image", "png", storageDir)
+    }
+
+
     private fun iniciarComponentes() {
         val objetoInt: Intent=intent
         correo = objetoInt.getStringExtra("email")
@@ -118,36 +142,73 @@ class SegundaActivity : AppCompatActivity() {
         imagenSegunda.setImageResource(R.drawable.ecgnegro)
     }
 
-    private fun previoGuardar() {
-            progressBar.visibility = View.VISIBLE
+    private fun previoGuardar(callback:(EvenPost)->Unit) {
+        progressBar.visibility = View.VISIBLE
         val nombre1 = filename
-        val ref = FirebaseStorage.getInstance().getReference("/imagenes/$nombre1")
-            ref.putFile(foUri3!!)
+        val evenPost = EvenPost()
+
+
+        val grupo = editHistoria.text.toString()
+        evenPost.documentId = FirebaseFirestore.getInstance().collection(grupo).document().id
+        val storageRef = FirebaseStorage.getInstance().reference.child("imagenes/$nombre1")
+
+        //primero verificamos si tempImageUri no esta vacio
+        tempImageUri?.let { uri ->
+            val photoRef = storageRef.child(nombre1)
+
+           // val ref = FirebaseStorage.getInstance().getReference("/imagenes/$nombre1")
+            photoRef.putFile(tempImageUri!!)
                 .addOnSuccessListener {
                     it.storage.downloadUrl.addOnSuccessListener { dowloadURL ->
-                        fotoURL1 = dowloadURL.toString()
+                        evenPost.isSuccess = true
+                        evenPost.photoUrl = dowloadURL.toString()
+                        callback(evenPost)
                     }
                     Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
                 }
+                .addOnFailureListener{
+                    evenPost.isSuccess = false
+                    callback(evenPost)
+                }
+        }
+
+
         val nombre2 = filename+"a"
-        val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$nombre2")
-            ref2.putFile(foUri4!!)
+
+        evenPost.documentId1 = FirebaseFirestore.getInstance().collection(grupo).document().id
+        val storageRef1 = FirebaseStorage.getInstance().reference.child("imagenes/$nombre2")
+
+
+        tempImageUri2?.let {uri1 ->
+           // val ref2 = FirebaseStorage.getInstance().getReference("/imagenes/$nombre2")
+           // val photoRef1 = storageRef1.child(evenPost.documentId1!!)
+            val photoRef1 = storageRef1.child(nombre2)
+            photoRef1.putFile(tempImageUri2!!)
                 .addOnSuccessListener {
                     it.storage.downloadUrl.addOnSuccessListener { dowloadURL ->
-                        fotoURL2 = dowloadURL.toString()
+                        evenPost.isSuccess = true
+                        evenPost.photoUrl1 = dowloadURL.toString()
+                        callback(evenPost)
                     }
                     Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
+                }
+                .addOnFailureListener {
+                    evenPost.isSuccess = false
+                    callback(evenPost)
+                }
+
         }
+
     }
 
-    private fun guardarDatosFirebase(){
+    private fun guardarDatosFirebase(documentId:String, documentId1: String){
+
             val grupo = editHistoria.text.toString()
-            val user = User(
-                editNombre.text.toString(),
-                mifecha,
-                correo!!,
-                filename
+            val user = User(editNombre.text.toString(),mifecha,correo!!, filename,
+                documentId,
+                documentId1
             )
+
             db.collection(grupo).document(mifecha).set(user).addOnCompleteListener {
                 editNombre.text.clear()
                 editHistoria.text.clear()
@@ -164,30 +225,27 @@ class SegundaActivity : AppCompatActivity() {
 
     }
 
-    val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    private var tempImageUri: Uri? = null
+    private var tempImageUri2: Uri? = null
+    private var tempImageFilePath = ""
 
-        if(fotoboolean) {
-               val tomarImagen = BitmapFactory.decodeFile(photoFile.absolutePath)
-            foUri3 = getImageUriFromBitmap(this,tomarImagen)
-            imagenPrimera.setImageBitmap(tomarImagen)
-            fotoboolean = false
-            btnFotos.setText("SEG FOTO")
-        }else{
-            val tomarImagen = BitmapFactory.decodeFile(photoFile.absolutePath)
-            foUri4 = getImageUriFromBitmap(this,tomarImagen)
-            imagenSegunda.setImageBitmap(tomarImagen)
-            fotoboolean = true
-            btnFotos.isEnabled=false
-            btnFotoboolean = false
+
+
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()){ success ->
+        if (success){
+            if (fotoboolean){
+                imagenPrimera.setImageURI(tempImageUri)
+                fotoboolean = false
+                btnFotoboolean = true
+            }else{
+                imagenSegunda.setImageURI(tempImageUri2)
+                fotoboolean = true
+                btnFotoboolean = false
+            }
         }
     }
 
-    fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri{
-        val bytes = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
-        return Uri.parse(path.toString())
-    }
 
     //detectamos el click para abrir camara
     private fun abreCamara_Click(){
@@ -204,23 +262,36 @@ class SegundaActivity : AppCompatActivity() {
             abreCamara()
         }
     }
+    val tomarFotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
     private fun abreCamara(){
-        val tomarFotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        photoFile = getPhotoFile(FILE_NAME)
-        val fileProvider = FileProvider.getUriForFile(this, "com.example.fileprovider", photoFile)
-        tomarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+     //  val tomarFotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
         if (tomarFotoIntent.resolveActivity(this.packageManager) != null) {
-            getAction.launch(tomarFotoIntent)
-        }else{
+
+                if (fotoboolean) {
+                    tempImageUri = FileProvider.getUriForFile(
+                        this,
+                        "com.example.segundo.provider",
+                        createImageFile().also {
+                            tempImageFilePath = it.absolutePath
+                        })
+                    cameraLauncher.launch(tempImageUri)
+
+                }else{
+                    tempImageUri2 = FileProvider.getUriForFile(
+                        this,
+                        "com.example.segundo.provider",
+                        createImageFile().also {
+                            tempImageFilePath = it.absolutePath
+                        })
+                    cameraLauncher.launch(tempImageUri2)
+                }
+        }
+        else{
             Toast.makeText(this, "Camara no accesile", Toast.LENGTH_SHORT).show()
         }
 
-    }
-
-    private fun getPhotoFile(fileName: String): File {
-        val storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(fileName, "jpg",storageDirectory)
     }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
@@ -229,10 +300,7 @@ class SegundaActivity : AppCompatActivity() {
         miBoton.text = titulo
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
@@ -244,5 +312,21 @@ class SegundaActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+ //   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+ //       menuInflater.inflate(R.menu.menu_main, menu)
+ //       return super.onCreateOptionsMenu(menu)
+ //   }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.acerca ->{
+                Toast.makeText(this,"Programa",Toast.LENGTH_LONG).show()
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Electrocardiogramas, es una solucion sensilla para consulta de documentos medicos u otra indole, sin necesidad de software complejo")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "1038837150654",
-    "firebase_url": "https://registroelectrocardiogramas-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "registroelectrocardiogramas",
-    "storage_bucket": "registroelectrocardiogramas.appspot.com"
+    "project_number": "440148953705",
+    "project_id": "fir-a136f",
+    "storage_bucket": "fir-a136f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1038837150654:android:9131469a7d0b9b5271ffef",
+        "mobilesdk_app_id": "1:440148953705:android:0b1d0e160bbbd19c8ef0f8",
         "android_client_info": {
           "package_name": "com.example.segundo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1038837150654-ql28o19o3mofk9qqb4g2iv36hipqhbpv.apps.googleusercontent.com",
+          "client_id": "440148953705-ipm6csch782aanbic1qcqh0sks0g825s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAv_rz-SBhavu4jhQvZ4I24ngTc9-jdYak"
+          "current_key": "AIzaSyBJgyZ_kABnyhG2b6CBeC9y4Fw3hMHyVD4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1038837150654-ql28o19o3mofk9qqb4g2iv36hipqhbpv.apps.googleusercontent.com",
+              "client_id": "440148953705-ipm6csch782aanbic1qcqh0sks0g825s.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1038837150654-lh8ka2pn79dudvalvfnh9m6sq3q158ui.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "felix.alvarez.Electrocargiogramas"
-              }
             }
           ]
         }

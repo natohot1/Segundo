@@ -24,6 +24,8 @@ class MiAdaptador2 (private val userList : ArrayList<User>, val listener:MyOnCli
         holder.fecha.text = user.fecha
         holder.correo.text = user.correo
         holder.imagen1.text = user.nombreElectro
+        holder.url1.text = user.fotoURL1
+        holder.url2.text = user.fotoURL1
 
 
 
@@ -37,6 +39,8 @@ class MiAdaptador2 (private val userList : ArrayList<User>, val listener:MyOnCli
         val fecha : TextView = itemView.findViewById(R.id.txtListaFecha)
         val correo : TextView = itemView.findViewById(R.id.txtListaCorreo)
         val imagen1 : TextView = itemView.findViewById(R.id.txtListaImagen1)
+        val url1: TextView = itemView.findViewById(R.id.txtListaUrl1)
+        val url2: TextView = itemView.findViewById(R.id.txtListaUrl2)
         init {
             itemView.setOnClickListener {
                 val position = absoluteAdapterPosition
