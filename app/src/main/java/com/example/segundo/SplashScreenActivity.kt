@@ -11,7 +11,7 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
        // miicono.alpha = 0f
-        miicono.animate().setDuration(1000).alpha(1f).withEndAction{
+        miicono.animate().setDuration(3000).alpha(1f).withEndAction{
             val i = Intent(this,MainActivity::class.java)
             startActivity(i)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

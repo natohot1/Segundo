@@ -3,7 +3,6 @@ package com.example.segundo
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -77,11 +76,13 @@ class MainActivity : AppCompatActivity() {
 
         session()
 
-
-
-
         //  FUNCION DE REGISTRO
         buttonRegistro.setOnClickListener {
+            if(correoid.text.toString().length <= 4){
+                Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
+
+            }
+
             if(correoid.text.toString() != "" && contrasenaId.text.toString() != "") {
                 val email = correoid.text.toString().trim()
                 val pasword = contrasenaId.text.toString().trim()

@@ -20,7 +20,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
-import com.google.firebase.auth.FirebaseAuth
+import androidx.core.view.isVisible
+import com.firebase.ui.auth.AuthUI
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_segunda.*
@@ -99,10 +100,18 @@ class SegundaActivity : AppCompatActivity() {
             val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
             prefs?.clear()
             val apply = prefs?.apply()
-            FirebaseAuth.getInstance().signOut()
-            Toast.makeText(this, "HAS SALIDO DE ECG+", Toast.LENGTH_LONG).show()
-            onBackPressed()
+            //FirebaseAuth.getInstance().signOut()
+            AuthUI.getInstance().signOut(this)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "HAS SALIDO DE ECG+", Toast.LENGTH_LONG).show()
+                    salirInicio()
+                    finish()
+                }
+
         }
+
+
+
         btnGuardados.setOnClickListener {
             if (editHistoria.text.length <8 ){
                 Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
@@ -114,6 +123,12 @@ class SegundaActivity : AppCompatActivity() {
                 editHistoria.setText("")
             }
         }
+    }
+
+    private fun salirInicio(){
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun createImageFile(): File {
@@ -176,7 +191,7 @@ class SegundaActivity : AppCompatActivity() {
         val nombre2 = filename+"a"
 
         evenPost.documentId1 = FirebaseFirestore.getInstance().collection(grupo).document().id
-        val storageRef1 = FirebaseStorage.getInstance().reference.child("imagenes/$nombre2")
+             val storageRef1 = FirebaseStorage.getInstance().reference.child("imagenes/$nombre2")
 
 
         tempImageUri2?.let {uri1 ->
@@ -216,11 +231,12 @@ class SegundaActivity : AppCompatActivity() {
                 imagenSegunda.setImageResource(R.drawable.ecgnegro)
                 Toast.makeText(this, "Se ha guardado satisfactoriamente", Toast.LENGTH_LONG).show()
                 progressBar.visibility = View.INVISIBLE
+                configurarBotones(btnFotos, "FOTOGRAFIAR")
             }.addOnFailureListener {
                 Toast.makeText(this, "No se pudo guardar", Toast.LENGTH_SHORT).show()
                 progressBar.visibility = View.INVISIBLE
             }.addOnFailureListener {
-
+                configurarBotones(btnFotos, "FOTOGRAFIAR")
             }
 
     }
@@ -238,10 +254,12 @@ class SegundaActivity : AppCompatActivity() {
                 imagenPrimera.setImageURI(tempImageUri)
                 fotoboolean = false
                 btnFotoboolean = true
+                configurarBotones(btnFotos, "2º IMAGEN")
             }else{
                 imagenSegunda.setImageURI(tempImageUri2)
                 fotoboolean = true
                 btnFotoboolean = false
+                btnFotos.visibility = View.INVISIBLE
             }
         }
     }
