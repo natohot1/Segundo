@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.Color.blue
+import android.graphics.Color.rgb
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -35,12 +37,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(correoid.length() > 7 && contrasenaId.length() >5){
-                    buttonInicio.isEnabled = true
-                    buttonRegistro.isEnabled = true
-                }else{
-                    buttonInicio.isEnabled = false
-                    buttonRegistro.isEnabled = false
+                if(correoid.length() > 0 && contrasenaId.length() >0){
+                    buttonInicio.setBackgroundColor(Color.parseColor("#0c18f1"))
+                    buttonInicio.setTextColor(Color.parseColor("#ffffff"))
+                }
+                else{
+                    buttonInicio.setBackgroundColor(Color.parseColor("#babbc8"))
+                    // miBoton.setBackgroundColor(Color.BLUE)
+                    buttonInicio.setTextColor(Color.parseColor("#dbddf5"))
                 }
             }
 
@@ -56,13 +60,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-              if(correoid.length() > 7 && contrasenaId.length() >5){
-                  buttonInicio.isEnabled = true
-                  buttonRegistro.isEnabled = true
+              if(contrasenaId.length() > 0 && correoid.length() >0){
+                  buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+                  buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
               }else{
-                  buttonInicio.isEnabled = false
-                  buttonRegistro.isEnabled = false
+                  buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+                  // miBoton.setBackgroundColor(Color.BLUE)
+                  buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
               }
+
                 Log.i("begoskndksjnj", "not overide")
 
             }
@@ -78,16 +84,12 @@ class MainActivity : AppCompatActivity() {
 
         //  FUNCION DE REGISTRO
         buttonRegistro.setOnClickListener {
-            if(correoid.text.toString().length <= 4){
-                Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
-
-            }
-
-            if(correoid.text.toString() != "" && contrasenaId.text.toString() != "") {
-                val email = correoid.text.toString().trim()
-                val pasword = contrasenaId.text.toString().trim()
+            val email = correoid.text.toString().trim()
+            val pasword = contrasenaId.text.toString().trim()
+            if(validar()){
                 login(email, pasword)
             }
+
         }
 
         // LLAMA A INCIO DE SESION
@@ -99,6 +101,38 @@ class MainActivity : AppCompatActivity() {
             }
         }
         
+    }
+
+    private fun validar(): Boolean {
+        if(contrasenaId.length() > 0 && correoid.length() >0){
+            buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+            buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+        }else{
+            buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+            // miBoton.setBackgroundColor(Color.BLUE)
+            buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+        }
+
+
+
+        
+        var esValido = true
+        if(correoid.text.toString().contains("@")){
+            esValido = true
+        }
+        if(correoid.text.toString() != "" && contrasenaId.text.toString() != ""){
+            esValido = true
+        }
+        if(correoid.text.toString().length <= 8){
+            esValido = false
+            Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
+        }
+        if(contrasenaId.text.toString().length <= 5){
+            esValido = false
+            Toast.makeText(applicationContext, "Contraseña no valida", Toast.LENGTH_SHORT).show()
+        }
+
+        return esValido
     }
 
 
@@ -152,8 +186,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
-        miBoton.setBackgroundColor(Color.BLUE)
-        miBoton.setTextColor(Color.WHITE)
+        miBoton.setBackgroundColor(Color.parseColor("#babbc8"))
+       // miBoton.setBackgroundColor(Color.BLUE)
+        miBoton.setTextColor(Color.parseColor("#dbddf5"))
       //  miBoton.shadowColor.red
         miBoton.text = titulo
        // miBoton.isEnabled = false
