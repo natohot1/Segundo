@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        title="PERPETUO SOCORRO"
+
         autentication = FirebaseAuth.getInstance()
         configurarBotones(buttonInicio,"INICIAR")
         configurarBotones(buttonRegistro,"REGISTRARSE")
@@ -74,11 +76,13 @@ class MainActivity : AppCompatActivity() {
 
         session()
 
-
-
-
         //  FUNCION DE REGISTRO
         buttonRegistro.setOnClickListener {
+            if(correoid.text.toString().length <= 4){
+                Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
+
+            }
+
             if(correoid.text.toString() != "" && contrasenaId.text.toString() != "") {
                 val email = correoid.text.toString().trim()
                 val pasword = contrasenaId.text.toString().trim()
@@ -105,6 +109,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this,SegundaActivity::class.java)
                 intent.putExtra("email",email)
                 startActivity(intent)
+                finish()
             }else{
                 Toast.makeText(applicationContext, "Ha fallado, no se pudo iniciar", Toast.LENGTH_SHORT).show()
             }
@@ -127,6 +132,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this,SegundaActivity::class.java)
         intent.putExtra("email",email)
         startActivity(intent)
+        finish()
     }
 
     override fun onStart() {
