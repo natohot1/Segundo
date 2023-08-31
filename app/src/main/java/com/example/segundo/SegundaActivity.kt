@@ -218,13 +218,16 @@ class SegundaActivity : AppCompatActivity() {
 
     private fun guardarDatosFirebase(documentId:String, documentId1: String){
 
-            val grupo = editHistoria.text.toString()
+            val grupo2 = editHistoria.text.toString()
+            val grupo = "misHistorias"
             val user = User(editNombre.text.toString(),mifecha,correo!!, filename,
                 documentId,
-                documentId1
+                documentId1,
+                grupo2
+
             )
 
-            db.collection(grupo).document(mifecha).set(user).addOnCompleteListener {
+            db.collection(grupo).document(filename).set(user).addOnCompleteListener {
                 editNombre.text.clear()
                 editHistoria.text.clear()
                 imagenPrimera.setImageResource(R.drawable.ecgnegro)

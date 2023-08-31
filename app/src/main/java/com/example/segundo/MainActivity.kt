@@ -123,11 +123,11 @@ class MainActivity : AppCompatActivity() {
         if(correoid.text.toString() != "" && contrasenaId.text.toString() != ""){
             esValido = true
         }
-        if(correoid.text.toString().length <= 8){
+        if(correoid.text.toString().length >= 8){
             esValido = false
             Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
         }
-        if(contrasenaId.text.toString().length <= 5){
+        if(contrasenaId.text.toString().length >= 6){
             esValido = false
             Toast.makeText(applicationContext, "Contraseña no valida", Toast.LENGTH_SHORT).show()
         }
