@@ -3,17 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"/>
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="false"/>
+        android:required="false" />
 
     <application
         android:name=".MyApplication"
@@ -24,16 +25,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Segundo">
         <activity
+            android:name=".RegistroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityInicial"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme"
-            android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
         <activity
             android:name=".Imagenes"
             android:exported="false" />
@@ -55,10 +62,8 @@
             android:name=".SegundaActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:name=".ActivityLogin"
+            android:exported="true" />
     </application>
 
 </manifest>

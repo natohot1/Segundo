@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
-import androidx.core.view.isVisible
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -126,7 +125,7 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun salirInicio(){
-        val intent = Intent(this,MainActivity::class.java)
+        val intent = Intent(this,SplashScreenActivity::class.java)
         startActivity(intent)
         finish()
     }

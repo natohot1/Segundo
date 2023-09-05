@@ -39,7 +39,9 @@ class Tabla3 : AppCompatActivity(),MiAdaptador2.MyOnClickListener {
 
     private fun EventChangeListener(miHistria:String) {
         db = FirebaseFirestore.getInstance()
-        db.collection(miHistria).addSnapshotListener(object : EventListener<QuerySnapshot>{
+        db.collection("misHistorias")
+            .whereEqualTo("historia", miHistria)
+            .addSnapshotListener(object : EventListener<QuerySnapshot>{
             override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                 if (error != null){
                     Log.e("Firestore Error", error.message.toString())
