@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.segundo"
+        applicationId "com.electros.electrocardiogramas"
         minSdk 21
-        targetSdk 31
-        versionCode 1
+        targetSdk 33
+        versionCode 4
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -38,7 +38,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    namespace 'com.example.segundo'
+    namespace 'com.electros.electrocardiogramas'
 
 }
 
@@ -66,6 +66,7 @@ dependencies {
 
     implementation 'androidx.activity:activity-ktx:1.5.1'
     implementation 'androidx.fragment:fragment-ktx:1.5.1'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
 
     //picaso
     implementation 'com.squareup.picasso:picasso:2.71828'

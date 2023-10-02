@@ -1,9 +1,6 @@
-package com.example.segundo
+package com.electros.electrocardiogramas
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,105 +10,124 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.electros.electrocardiogramas.R
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_login.*
-class ActivityLogin : AppCompatActivity() {
+import kotlinx.android.synthetic.main.activity_registro.buttonRegistro
+import kotlinx.android.synthetic.main.activity_registro.contrasenaId
+import kotlinx.android.synthetic.main.activity_registro.contrasenaId2
+import kotlinx.android.synthetic.main.activity_registro.correoid
+import kotlinx.android.synthetic.main.activity_registro.outLayout2
 
+
+class RegistroActivity : AppCompatActivity() {
     private var autentication : FirebaseAuth?=null
-
-
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_registro)
 
         title="PERPETUO SOCORRO"
 
         autentication = FirebaseAuth.getInstance()
-        configurarBotones(buttonInicio,"INICIAR")
 
+        configurarBotones(buttonRegistro,"REGISTRARSE")
 
-        correoid.addTextChangedListener(object : TextWatcher{
+        correoid.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 Log.i("begoskndksjnj", "not overide")
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(correoid.length() > 8 && contrasenaId.length() >5){
-                    buttonInicio.setBackgroundColor(Color.parseColor("#0c18f1"))
-                    buttonInicio.setTextColor(Color.parseColor("#ffffff"))
-                    buttonInicio.isEnabled = true
+                if(correoid.length() > 8 && contrasenaId.length() >5 && contrasenaId2.length() >5){
+                    buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+                    buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+                    buttonRegistro.isEnabled = true
                 }
                 else{
-                    buttonInicio.setBackgroundColor(Color.parseColor("#babbc8"))
+                    buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
                     // miBoton.setBackgroundColor(Color.BLUE)
-                    buttonInicio.setTextColor(Color.parseColor("#dbddf5"))
-                    buttonInicio.isEnabled = false
+                    buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+                    buttonRegistro.isEnabled = false
                 }
+            }
+            override fun afterTextChanged(s: Editable?) {
+                Log.i("begoskndksjnj", "not overide")
+            }
+        })
+
+        contrasenaId.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.i("begoskndksjnj", "not overide")
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(contrasenaId.length() > 5 && correoid.length() >8 && contrasenaId2.length() >5){
+                    buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+                    buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+                    buttonRegistro.isEnabled = true
+                }else{
+                    buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+                    buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+                    buttonRegistro.isEnabled = false
+                }
+                Log.i("begoskndksjnj", "not overide")
             }
 
             override fun afterTextChanged(s: Editable?) {
                 Log.i("begoskndksjnj", "not overide")
             }
-
         })
 
-        contrasenaId.addTextChangedListener(object : TextWatcher{
+        contrasenaId2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 Log.i("begoskndksjnj", "not overide")
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(correoid.length() > 8 && contrasenaId.length() >5){
-                    buttonInicio.setBackgroundColor(Color.parseColor("#0c18f1"))
-                    buttonInicio.setTextColor(Color.parseColor("#ffffff"))
-                    buttonInicio.isEnabled = true
+                if(contrasenaId.length() > 5 && correoid.length() >8 && contrasenaId2.length() >5){
+                    buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+                    buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+                    buttonRegistro.isEnabled = true
+                }else{
+                    buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+                    buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+                    buttonRegistro.isEnabled = false
                 }
-                else{
-                    buttonInicio.setBackgroundColor(Color.parseColor("#babbc8"))
-                    // miBoton.setBackgroundColor(Color.BLUE)
-                    buttonInicio.setTextColor(Color.parseColor("#dbddf5"))
-                    buttonInicio.isEnabled = false
-                }
-
                 Log.i("begoskndksjnj", "not overide")
-
             }
 
             override fun afterTextChanged(s: Editable?) {
-               // buttonInicio.isEnabled = correoid.length() >= 8
                 Log.i("begoskndksjnj", "not overide")
             }
-
         })
 
-        session()
 
 
-        // LLAMA A INCIO DE SESION
-        buttonInicio.setOnClickListener {
-            if(correoid.text.toString() != "" && contrasenaId.text.toString() != "") {
+        //  FUNCION DE REGISTRO
+        buttonRegistro.setOnClickListener {
+            if (contrasenaId != contrasenaId2){
+                Toast.makeText(applicationContext, "Las contraseñas no son iguales", Toast.LENGTH_SHORT).show()
+            }else {
                 val email = correoid.text.toString().trim()
                 val pasword = contrasenaId.text.toString().trim()
-                inicio(email, pasword)
+                login(email, pasword)
             }
+
         }
-        
+
+
+
     }
 
     private fun validar(): Boolean {
         if(contrasenaId.length() > 0 && correoid.length() >0){
-         //   buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
-         //   buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+            buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+            buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
         }else{
-          //  buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
-            // miBoton.setBackgroundColor(Color.BLUE)
-         //   buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+            buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+
+            buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
         }
 
 
 
-        
+
         var esValido = true
         if(correoid.text.toString().contains("@")){
             esValido = true
@@ -136,7 +152,7 @@ class ActivityLogin : AppCompatActivity() {
         autentication!!.signInWithEmailAndPassword(email,pasword).addOnCompleteListener {
             if (it.isSuccessful){
                 Toast.makeText(applicationContext, "Has Iniciado sesion", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this,SegundaActivity::class.java)
+                val intent = Intent(this, SegundaActivity::class.java)
                 intent.putExtra("email",email)
                 startActivity(intent)
                 finish()
@@ -155,11 +171,11 @@ class ActivityLogin : AppCompatActivity() {
             }else{
                 Toast.makeText(applicationContext, "Ha fallado el Registro", Toast.LENGTH_LONG).show()
             }
-            
+
         }
     }
     private fun aSegunda(email: String){
-        val intent = Intent(this,SegundaActivity::class.java)
+        val intent = Intent(this, SegundaActivity::class.java)
         intent.putExtra("email",email)
         startActivity(intent)
         finish()
@@ -167,29 +183,20 @@ class ActivityLogin : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        outLayout.visibility = View.VISIBLE
+        outLayout2.visibility = View.VISIBLE
     }
 
-    private fun session(){
-        val prefs: SharedPreferences = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE)
-        val correoSha:String?  = prefs.getString("correo",null)
-        if(correoSha != null){
-            outLayout.visibility = View.INVISIBLE
-            aSegunda(correoSha)
-        }
-    }
+
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
         miBoton.setBackgroundColor(Color.parseColor("#babbc8"))
-       // miBoton.setBackgroundColor(Color.BLUE)
+        // miBoton.setBackgroundColor(Color.BLUE)
         miBoton.setTextColor(Color.parseColor("#dbddf5"))
-      //  miBoton.shadowColor.red
+        //  miBoton.shadowColor.red
         miBoton.text = titulo
-       // miBoton.isEnabled = false
+        // miBoton.isEnabled = false
         miBoton.isEnabled = false
     }
-    
-    
-    
-    
+
+
 }

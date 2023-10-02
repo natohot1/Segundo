@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.example.electrocardiogramas
 
 import org.junit.Test
 

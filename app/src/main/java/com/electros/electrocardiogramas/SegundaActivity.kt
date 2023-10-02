@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.electros.electrocardiogramas
 
 import android.content.Context
 import android.content.Intent
@@ -31,25 +31,15 @@ import java.util.*
 
 
 private const val RECUEST_CAMARA = 1
-private lateinit var photoFile: File
-private const val FILE_NAME = "photo.jpg"
+
 
 class SegundaActivity : AppCompatActivity() {
-    var foUri3:Uri? = null
-    var foUri4:Uri? = null
-    var fotoURL1:String = ""
-    var fotoURL2:String = ""
 
-    var ur1: String = ""
-    var ur2: String? = ""
 
     var correo:String? = null
     val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
     val mifecha = sdf.format(Date())
     var filename:String = ""
-
-    var mini:File? = null
-
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -87,8 +77,6 @@ class SegundaActivity : AppCompatActivity() {
                     if (eventPost.isSuccess) {
                         guardarDatosFirebase(eventPost.photoUrl!!, eventPost.photoUrl1!!)
                         startActivity(intent)
-
-
                     }
                 }
 
@@ -98,7 +86,7 @@ class SegundaActivity : AppCompatActivity() {
         btnSalir.setOnClickListener {
             val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
             prefs?.clear()
-            val apply = prefs?.apply()
+
             //FirebaseAuth.getInstance().signOut()
             AuthUI.getInstance().signOut(this)
                 .addOnSuccessListener {
@@ -116,7 +104,7 @@ class SegundaActivity : AppCompatActivity() {
                 Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
                 Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_SHORT).show()
             }else{
-                val intent = Intent(this,Tabla3::class.java)
+                val intent = Intent(this, Tabla3::class.java)
                 intent.putExtra("historia",editHistoria.text.toString())
                 startActivity(intent)
                 editHistoria.setText("")
@@ -125,7 +113,7 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun salirInicio(){
-        val intent = Intent(this,SplashScreenActivity::class.java)
+        val intent = Intent(this, SplashScreenActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -133,11 +121,6 @@ class SegundaActivity : AppCompatActivity() {
     private fun createImageFile(): File {
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("temp_image", "jpg", storageDir)
-    }
-
-    private fun createImageFile2(): File {
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("temp_image", "png", storageDir)
     }
 
 
@@ -216,6 +199,7 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun guardarDatosFirebase(documentId:String, documentId1: String){
+
 
             val grupo2 = editHistoria.text.toString()
             val grupo = "misHistorias"

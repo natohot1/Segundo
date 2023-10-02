@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.electros.electrocardiogramas
 
 import android.app.Application
 import com.google.firebase.database.ktx.database
