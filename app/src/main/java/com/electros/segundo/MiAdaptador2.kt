@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.electros.segundo
 
 
 import android.view.LayoutInflater
@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.electros.segundo.R
 
 
-class MiAdaptador2 (private val userList : ArrayList<User>, val listener:MyOnClickListener): RecyclerView.Adapter<MiAdaptador2.MiviewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiAdaptador2.MiviewHolder {
+class MiAdaptador2 (private val userList : ArrayList<User>, val listener: MyOnClickListener): RecyclerView.Adapter<MiAdaptador2.MiviewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiviewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false)
         itemView.setOnClickListener {
 
@@ -17,7 +18,7 @@ class MiAdaptador2 (private val userList : ArrayList<User>, val listener:MyOnCli
         return MiviewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: MiAdaptador2.MiviewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MiviewHolder, position: Int) {
 
         val user : User = userList[position]
         holder.nombre.text = user.nombre

@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.electros.segundo
 
 import org.junit.Test
 

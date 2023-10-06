@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.electros.segundo
 
 class EvenPost () {
     var isSuccess: Boolean=false

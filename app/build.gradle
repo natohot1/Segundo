@@ -10,7 +10,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.segundo"
+        applicationId "com.electros.segundo"
         minSdk 21
         targetSdk 31
         versionCode 1
@@ -38,7 +38,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    namespace 'com.example.segundo'
+    namespace 'com.electros.segundo'
 
 }
 

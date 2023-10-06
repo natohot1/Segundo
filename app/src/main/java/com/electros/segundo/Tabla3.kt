@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.electros.segundo
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.electros.segundo.R
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_tabla3.faboton
 
 
-class Tabla3 : AppCompatActivity(),MiAdaptador2.MyOnClickListener {
+class Tabla3 : AppCompatActivity(), MiAdaptador2.MyOnClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var userArrayList: ArrayList<User>
     private lateinit var miAdaptador2: MiAdaptador2
@@ -75,7 +76,7 @@ class Tabla3 : AppCompatActivity(),MiAdaptador2.MyOnClickListener {
     override fun OnClick(position: Int) {
         val ima1 = userArrayList[position].fotoURL1
         val ima2 = userArrayList[position].fotoURL2
-        val inte = Intent(this,Imagenes::class.java)
+        val inte = Intent(this, Imagenes::class.java)
         inte.putExtra("imagen1",ima1)
         inte.putExtra("imagen2",ima2)
         startActivity(inte)

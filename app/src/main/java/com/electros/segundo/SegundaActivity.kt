@@ -1,4 +1,4 @@
-package com.example.segundo
+package com.electros.segundo
 
 import android.content.Context
 import android.content.Intent
@@ -114,7 +114,7 @@ class SegundaActivity : AppCompatActivity() {
                 Log.d("SegundaActivity","Historia tendra 8 digitos incluido 0 delante")
                 Toast.makeText(applicationContext, "Historia tendra 8 digitos incluido 0 delante", Toast.LENGTH_SHORT).show()
             }else{
-                val intent = Intent(this,Tabla3::class.java)
+                val intent = Intent(this, Tabla3::class.java)
                 intent.putExtra("historia",editHistoria.text.toString())
                 startActivity(intent)
                 editHistoria.setText("")
@@ -123,7 +123,7 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun salirInicio(){
-        val intent = Intent(this,ActivityLogin::class.java)
+        val intent = Intent(this, ActivityLogin::class.java)
         startActivity(intent)
         finish()
     }
@@ -215,26 +215,29 @@ class SegundaActivity : AppCompatActivity() {
 
     private fun guardarDatosFirebase(documentId:String, documentId1: String){
 
-            val grupo = editHistoria.text.toString()
-            val user = User(editNombre.text.toString(),mifecha,correo!!, filename,
-                documentId,
-                documentId1
-            )
+        val grupo2 = editHistoria.text.toString()
+        val grupo = "misHistorias"
+        val user = User(editNombre.text.toString(),mifecha,correo!!, filename,
+            documentId,
+            documentId1,
+            grupo2
 
-            db.collection(grupo).document(mifecha).set(user).addOnCompleteListener {
-                editNombre.text.clear()
-                editHistoria.text.clear()
-                imagenPrimera.setImageResource(R.drawable.ecgnegro)
-                imagenSegunda.setImageResource(R.drawable.ecgnegro)
-                Toast.makeText(this, "Se ha guardado satisfactoriamente", Toast.LENGTH_LONG).show()
-                progressBar.visibility = View.INVISIBLE
-                configurarBotones(btnFotos, "FOTOGRAFIAR")
-            }.addOnFailureListener {
-                Toast.makeText(this, "No se pudo guardar", Toast.LENGTH_SHORT).show()
-                progressBar.visibility = View.INVISIBLE
-            }.addOnFailureListener {
-                configurarBotones(btnFotos, "FOTOGRAFIAR")
-            }
+        )
+
+        db.collection(grupo).document(filename).set(user).addOnCompleteListener {
+            editNombre.text.clear()
+            editHistoria.text.clear()
+            imagenPrimera.setImageResource(R.drawable.ecgnegro)
+            imagenSegunda.setImageResource(R.drawable.ecgnegro)
+            Toast.makeText(this, "Se ha guardado satisfactoriamente", Toast.LENGTH_LONG).show()
+            progressBar.visibility = View.INVISIBLE
+            configurarBotones(btnFotos, "FOTOGRAFIAR")
+        }.addOnFailureListener {
+            Toast.makeText(this, "No se pudo guardar", Toast.LENGTH_SHORT).show()
+            progressBar.visibility = View.INVISIBLE
+        }.addOnFailureListener {
+            configurarBotones(btnFotos, "FOTOGRAFIAR")
+        }
 
     }
 
@@ -287,7 +290,7 @@ class SegundaActivity : AppCompatActivity() {
                 if (fotoboolean) {
                     tempImageUri = FileProvider.getUriForFile(
                         this,
-                        "com.example.segundo.provider",
+                        "com.electros.segundo.provider",
                         createImageFile().also {
                             tempImageFilePath = it.absolutePath
                         })
@@ -296,7 +299,7 @@ class SegundaActivity : AppCompatActivity() {
                 }else{
                     tempImageUri2 = FileProvider.getUriForFile(
                         this,
-                        "com.example.segundo.provider",
+                        "com.electros.segundo.provider",
                         createImageFile().also {
                             tempImageFilePath = it.absolutePath
                         })
