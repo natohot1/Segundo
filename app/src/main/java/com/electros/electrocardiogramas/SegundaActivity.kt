@@ -1,4 +1,4 @@
-package com.electros.segundo
+package com.electros.electrocardiogramas
 
 import android.content.Context
 import android.content.Intent
@@ -49,6 +49,7 @@ class SegundaActivity : AppCompatActivity() {
     var filename:String = ""
 
     var mini:File? = null
+    var contador = 0
 
 
     private val db = FirebaseFirestore.getInstance()
@@ -160,8 +161,8 @@ class SegundaActivity : AppCompatActivity() {
         val evenPost = EvenPost()
 
 
-        val grupo = editHistoria.text.toString()
-        evenPost.documentId = FirebaseFirestore.getInstance().collection(grupo).document().id
+        val etHistoriaValorString = editHistoria.text.toString()
+        evenPost.documentId = FirebaseFirestore.getInstance().collection(etHistoriaValorString).document().id
         val storageRef = FirebaseStorage.getInstance().reference.child("imagenes/$nombre1")
 
         //primero verificamos si tempImageUri no esta vacio
@@ -177,6 +178,7 @@ class SegundaActivity : AppCompatActivity() {
                         callback(evenPost)
                     }
                     Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
+                  //  Toast.makeText(this,"SUBIO IMAGEN1", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener{
                     evenPost.isSuccess = false
@@ -187,7 +189,7 @@ class SegundaActivity : AppCompatActivity() {
 
         val nombre2 = filename+"a"
 
-        evenPost.documentId1 = FirebaseFirestore.getInstance().collection(grupo).document().id
+        evenPost.documentId1 = FirebaseFirestore.getInstance().collection(etHistoriaValorString).document().id
              val storageRef1 = FirebaseStorage.getInstance().reference.child("imagenes/$nombre2")
 
 
@@ -203,6 +205,7 @@ class SegundaActivity : AppCompatActivity() {
                         callback(evenPost)
                     }
                     Log.d("SegundaActivity", "subio imagen: ${it.metadata?.path}")
+                  //  Toast.makeText(this,"SUBIO IMAGEN2", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {
                     evenPost.isSuccess = false
@@ -217,7 +220,11 @@ class SegundaActivity : AppCompatActivity() {
 
         val grupo2 = editHistoria.text.toString()
         val grupo = "misHistorias"
-        val user = User(editNombre.text.toString(),mifecha,correo!!, filename,
+       // val grupo = "historias"
+        val user = User(editNombre.text.toString(),
+            mifecha,
+            correo!!,
+            filename,
             documentId,
             documentId1,
             grupo2
@@ -225,12 +232,19 @@ class SegundaActivity : AppCompatActivity() {
         )
 
         db.collection(grupo).document(filename).set(user).addOnCompleteListener {
-            editNombre.text.clear()
-            editHistoria.text.clear()
+            contador += 1
+
             imagenPrimera.setImageResource(R.drawable.ecgnegro)
             imagenSegunda.setImageResource(R.drawable.ecgnegro)
-            Toast.makeText(this, "Se ha guardado satisfactoriamente", Toast.LENGTH_LONG).show()
-            progressBar.visibility = View.INVISIBLE
+
+            if ( contador >1) {
+                editNombre.text.clear()
+                editHistoria.text.clear()
+
+
+                Toast.makeText(this, "Se ha guardado satisfactoriamente", Toast.LENGTH_LONG).show()
+                progressBar.visibility = View.INVISIBLE
+            }
             configurarBotones(btnFotos, "FOTOGRAFIAR")
         }.addOnFailureListener {
             Toast.makeText(this, "No se pudo guardar", Toast.LENGTH_SHORT).show()
@@ -290,7 +304,7 @@ class SegundaActivity : AppCompatActivity() {
                 if (fotoboolean) {
                     tempImageUri = FileProvider.getUriForFile(
                         this,
-                        "com.electros.segundo.provider",
+                        "com.electros.electrocardiogramas.provider",
                         createImageFile().also {
                             tempImageFilePath = it.absolutePath
                         })
@@ -299,7 +313,7 @@ class SegundaActivity : AppCompatActivity() {
                 }else{
                     tempImageUri2 = FileProvider.getUriForFile(
                         this,
-                        "com.electros.segundo.provider",
+                        "com.electros.electrocardiogramas.provider",
                         createImageFile().also {
                             tempImageFilePath = it.absolutePath
                         })

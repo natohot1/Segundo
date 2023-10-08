@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0978C6"
-    tools:context="com.electros.segundo.RegistroActivity">
+    tools:context="com.electros.electrocardiogramas.RegistroActivity">
 
 
     <EditText
@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0.061" />
 
     <EditText
-        android:id="@+id/contrasenaId2"
+        android:id="@+id/contra2"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:ems="10"

@@ -1,4 +1,4 @@
-package com.electros.segundo
+package com.electros.electrocardiogramas
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.electros.segundo.R
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_tabla3.faboton
 
@@ -76,9 +75,11 @@ class Tabla3 : AppCompatActivity(), MiAdaptador2.MyOnClickListener {
     override fun OnClick(position: Int) {
         val ima1 = userArrayList[position].fotoURL1
         val ima2 = userArrayList[position].fotoURL2
+        val hispasar = historia
         val inte = Intent(this, Imagenes::class.java)
         inte.putExtra("imagen1",ima1)
         inte.putExtra("imagen2",ima2)
+        inte.putExtra("histo",hispasar)
         startActivity(inte)
     }
 }

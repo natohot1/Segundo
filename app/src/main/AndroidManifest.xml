@@ -17,7 +17,7 @@
         android:required="false" />
 
     <application
-        android:name="com.electros.segundo.MyApplication"
+        android:name="com.electros.electrocardiogramas.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,10 +25,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Segundo">
         <activity
-            android:name="com.electros.segundo.RegistroActivity"
+            android:name="com.electros.electrocardiogramas.RegistroActivity"
             android:exported="false" />
         <activity
-            android:name="com.electros.segundo.SplashScreenActivity"
+            android:name="com.electros.electrocardiogramas.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -38,10 +38,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.electros.segundo.Imagenes"
+            android:name="com.electros.electrocardiogramas.Imagenes"
             android:exported="false" />
         <activity
-            android:name="com.electros.segundo.Tabla3"
+            android:name="com.electros.electrocardiogramas.Tabla3"
             android:exported="false" />
 
         <provider
@@ -55,10 +55,10 @@
         </provider>
 
         <activity
-            android:name="com.electros.segundo.SegundaActivity"
+            android:name="com.electros.electrocardiogramas.SegundaActivity"
             android:exported="false" />
         <activity
-            android:name="com.electros.segundo.ActivityLogin"
+            android:name="com.electros.electrocardiogramas.ActivityLogin"
             android:exported="true"></activity>
     </application>
 

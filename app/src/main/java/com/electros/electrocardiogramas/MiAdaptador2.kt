@@ -1,4 +1,4 @@
-package com.electros.segundo
+package com.electros.electrocardiogramas
 
 
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.electros.segundo.R
+import com.electros.electrocardiogramas.R
 
 
 class MiAdaptador2 (private val userList : ArrayList<User>, val listener: MyOnClickListener): RecyclerView.Adapter<MiAdaptador2.MiviewHolder>() {

@@ -1,7 +1,4 @@
-package com.electros.segundo
-
-import android.net.Uri
-import java.net.URL
+package com.electros.electrocardiogramas
 
 data class User(var nombre:String ?=null,
                 var fecha:String ?=null,

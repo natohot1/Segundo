@@ -1,4 +1,4 @@
-package com.electros.segundo
+package com.electros.electrocardiogramas
 
 class EvenPost () {
     var isSuccess: Boolean=false
