@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -19,15 +18,16 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_segunda.*
 import java.io.File
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 
 private const val RECUEST_CAMARA = 1
@@ -51,10 +51,7 @@ class SegundaActivity : AppCompatActivity() {
     var mini:File? = null
     var contador = 0
 
-
     private val db = FirebaseFirestore.getInstance()
-
-
 
     private var fotoboolean = true
     private var btnFotoboolean = true
@@ -84,17 +81,12 @@ class SegundaActivity : AppCompatActivity() {
                 Toast.makeText(this, "Debes tomar las dos IMAGENES", Toast.LENGTH_LONG).show()
             }else{
                 previoGuardar() { eventPost ->
-
                     if (eventPost.isSuccess) {
                         guardarDatosFirebase(eventPost.photoUrl!!, eventPost.photoUrl1!!)
                         startActivity(intent)
-
-
                     }
                 }
-
             }
-
         }
         btnSalir.setOnClickListener {
             val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
@@ -121,6 +113,45 @@ class SegundaActivity : AppCompatActivity() {
                 editHistoria.setText("")
             }
         }
+    }
+
+    ////////////////////////////
+    // QUITAR ACENTOS
+    //////////////////
+
+    private fun quitarAcenNombre(nombre: String): String? {
+        var devu: String? = ""
+        val separaPalabras = nombre.split(" ")
+        val cuantasPal = separaPalabras.count()
+        var contador = 0
+        while (contador < cuantasPal){
+            val devu1 = limpiarAcentos(separaPalabras[contador])
+            if (contador == 0){
+                devu = devu1
+            }else {
+                devu = devu + " " + devu1
+            }
+            contador = contador + 1
+        }
+        return devu
+    }
+
+    fun limpiarAcentos(cadena: String?): String? {
+        var limpio: String? = null
+        if (cadena != null) {
+            var valor: String = cadena
+            //valor = valor.uppercase(Locale.getDefault())
+            // Normalizar texto para eliminar acentos, dieresis, cedillas y tildes
+            limpio = Normalizer.normalize(valor, Normalizer.Form.NFD)
+            // Quitar caracteres no ASCII excepto la enie, interrogacion que abre, exclamacion que abre, grados, U con dieresis.
+            limpio = limpio.replace(
+                "[^\\p{ASCII}(N\u0303)(n\u0303)(\u00A1)(\u00BF)(\u00B0)(U\u0308)(u\u0308)]".toRegex(),
+                ""
+            )
+            // Regresar a la forma compuesta, para poder comparar la enie con la tabla de valores
+            limpio = Normalizer.normalize(limpio, Normalizer.Form.NFC)
+        }
+        return limpio
     }
 
     private fun salirInicio(){
@@ -217,31 +248,20 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun guardarDatosFirebase(documentId:String, documentId1: String){
-
         val grupo2 = editHistoria.text.toString()
         val grupo = "misHistorias"
-       // val grupo = "historias"
-        val user = User(editNombre.text.toString(),
-            mifecha,
-            correo!!,
-            filename,
-            documentId,
-            documentId1,
-            grupo2
-
+        val nomPaciente = editNombre.text.toString()
+        val nomSinAcento = quitarAcenNombre(nombre = nomPaciente)
+        val user = User(nomSinAcento,
+            mifecha, correo!!, filename, documentId, documentId1, grupo2
         )
-
         db.collection(grupo).document(filename).set(user).addOnCompleteListener {
             contador += 1
-
             imagenPrimera.setImageResource(R.drawable.ecgnegro)
             imagenSegunda.setImageResource(R.drawable.ecgnegro)
-
             if ( contador >1) {
                 editNombre.text.clear()
                 editHistoria.text.clear()
-
-
                 Toast.makeText(this, "Se ha guardado satisfactoriamente", Toast.LENGTH_LONG).show()
                 progressBar.visibility = View.INVISIBLE
             }
@@ -252,7 +272,6 @@ class SegundaActivity : AppCompatActivity() {
         }.addOnFailureListener {
             configurarBotones(btnFotos, "FOTOGRAFIAR")
         }
-
     }
 
     private var tempImageUri: Uri? = null

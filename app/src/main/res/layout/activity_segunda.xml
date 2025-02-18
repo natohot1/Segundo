@@ -95,7 +95,7 @@
         android:ems="10"
         android:hint="@string/nombre"
         android:textColorHint="@color/colorHint"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/guideline19"
