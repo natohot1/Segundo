@@ -97,40 +97,20 @@ class ActivityLogin : AppCompatActivity() {
                 inicio(email, pasword)
             }
         }
+
+        btnActualizar.setOnClickListener{
+            if(correoid.text.toString() != "" && contrasenaId.text.toString() != "") {
+                val intent = Intent(this, ActivityInicial::class.java)
+
+                startActivity(intent)
+            }else{
+                Toast.makeText(applicationContext, "Rellena los campos", Toast.LENGTH_SHORT).show()
+            }
+
+        }
         
     }
 
-    private fun validar(): Boolean {
-        if(contrasenaId.length() > 0 && correoid.length() >0){
-         //   buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
-         //   buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
-        }else{
-          //  buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
-            // miBoton.setBackgroundColor(Color.BLUE)
-         //   buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
-        }
-
-
-
-        
-        var esValido = true
-        if(correoid.text.toString().contains("@")){
-            esValido = true
-        }
-        if(correoid.text.toString() != "" && contrasenaId.text.toString() != ""){
-            esValido = true
-        }
-        if(correoid.text.toString().length >= 8){
-            esValido = false
-            Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
-        }
-        if(contrasenaId.text.toString().length >= 6){
-            esValido = false
-            Toast.makeText(applicationContext, "Contraseña no valida", Toast.LENGTH_SHORT).show()
-        }
-
-        return esValido
-    }
 
 
     private fun inicio(email: String, pasword: String) {
