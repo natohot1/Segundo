@@ -25,7 +25,7 @@ class MiAdaptador2(private val userList: ArrayList<User>, val listener: Tabla3):
         holder.correo.text = user.correo
         holder.imagen1.text = user.nombreElectro
         holder.url1.text = user.fotoURL1
-        holder.url2.text = user.fotoURL1
+        holder.url2.text = user.fotoURL2
 
 
 

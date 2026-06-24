@@ -10,42 +10,38 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.electros.electrocardiogramas.R
+import com.electros.electrocardiogramas.databinding.ActivityRegistroBinding
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_registro.buttonRegistro
-import kotlinx.android.synthetic.main.activity_registro.contrasenaId
-import kotlinx.android.synthetic.main.activity_registro.contrasenaId2
-import kotlinx.android.synthetic.main.activity_registro.correoid
-import kotlinx.android.synthetic.main.activity_registro.outLayout2
 
 
 class RegistroActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegistroBinding
     private var autentication : FirebaseAuth?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro)
+        binding = ActivityRegistroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         title="PERPETUO SOCORRO"
 
         autentication = FirebaseAuth.getInstance()
 
-        configurarBotones(buttonRegistro,"REGISTRARSE")
+        configurarBotones(binding.buttonRegistro,"REGISTRARSE")
 
-        correoid.addTextChangedListener(object : TextWatcher {
+        binding.correoid.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 Log.i("begoskndksjnj", "not overide")
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(correoid.length() > 8 && contrasenaId.length() >5 && contrasenaId2.length() >5){
-                    buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
-                    buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
-                    buttonRegistro.isEnabled = true
+                if(binding.correoid.length() > 8 && binding.contrasenaId.length() >5 && binding.contrasenaId2.length() >5){
+                    binding.buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+                    binding.buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+                    binding.buttonRegistro.isEnabled = true
                 }
                 else{
-                    buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
-                    // miBoton.setBackgroundColor(Color.BLUE)
-                    buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
-                    buttonRegistro.isEnabled = false
+                    binding.buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+                    binding.buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+                    binding.buttonRegistro.isEnabled = false
                 }
             }
             override fun afterTextChanged(s: Editable?) {
@@ -53,19 +49,19 @@ class RegistroActivity : AppCompatActivity() {
             }
         })
 
-        contrasenaId.addTextChangedListener(object : TextWatcher {
+        binding.contrasenaId.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 Log.i("begoskndksjnj", "not overide")
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(contrasenaId.length() > 5 && correoid.length() >8 && contrasenaId2.length() >5){
-                    buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
-                    buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
-                    buttonRegistro.isEnabled = true
+                if(binding.contrasenaId.length() > 5 && binding.correoid.length() >8 && binding.contrasenaId2.length() >5){
+                    binding.buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+                    binding.buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+                    binding.buttonRegistro.isEnabled = true
                 }else{
-                    buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
-                    buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
-                    buttonRegistro.isEnabled = false
+                    binding.buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+                    binding.buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+                    binding.buttonRegistro.isEnabled = false
                 }
                 Log.i("begoskndksjnj", "not overide")
             }
@@ -75,19 +71,19 @@ class RegistroActivity : AppCompatActivity() {
             }
         })
 
-        contrasenaId2.addTextChangedListener(object : TextWatcher {
+        binding.contrasenaId2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 Log.i("begoskndksjnj", "not overide")
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(contrasenaId.length() > 5 && correoid.length() >8 && contrasenaId2.length() >5){
-                    buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
-                    buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
-                    buttonRegistro.isEnabled = true
+                if(binding.contrasenaId.length() > 5 && binding.correoid.length() >8 && binding.contrasenaId2.length() >5){
+                    binding.buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+                    binding.buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+                    binding.buttonRegistro.isEnabled = true
                 }else{
-                    buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
-                    buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
-                    buttonRegistro.isEnabled = false
+                    binding.buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+                    binding.buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+                    binding.buttonRegistro.isEnabled = false
                 }
                 Log.i("begoskndksjnj", "not overide")
             }
@@ -97,49 +93,41 @@ class RegistroActivity : AppCompatActivity() {
             }
         })
 
-
-
-        //  FUNCION DE REGISTRO
-        buttonRegistro.setOnClickListener {
-            if (contrasenaId != contrasenaId2){
+        binding.buttonRegistro.setOnClickListener {
+            val pass1 = binding.contrasenaId.text?.toString()?.trim().orEmpty()
+            val pass2 = binding.contrasenaId2.text?.toString()?.trim().orEmpty()
+            if (pass1 != pass2){
                 Toast.makeText(applicationContext, "Las contraseñas no son iguales", Toast.LENGTH_SHORT).show()
             }else {
-                val email = correoid.text.toString().trim()
-                val pasword = contrasenaId.text.toString().trim()
+                val email = binding.correoid.text.toString().trim()
+                val pasword = pass1
                 login(email, pasword)
             }
 
         }
-
-
-
     }
 
     private fun validar(): Boolean {
-        if(contrasenaId.length() > 0 && correoid.length() >0){
-            buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
-            buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
+        if(binding.contrasenaId.length() > 0 && binding.correoid.length() >0){
+            binding.buttonRegistro.setBackgroundColor(Color.parseColor("#0c18f1"))
+            binding.buttonRegistro.setTextColor(Color.parseColor("#ffffff"))
         }else{
-            buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
-
-            buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
+            binding.buttonRegistro.setBackgroundColor(Color.parseColor("#babbc8"))
+            binding.buttonRegistro.setTextColor(Color.parseColor("#dbddf5"))
         }
-
-
-
 
         var esValido = true
-        if(correoid.text.toString().contains("@")){
+        if(binding.correoid.text.toString().contains("@")){
             esValido = true
         }
-        if(correoid.text.toString() != "" && contrasenaId.text.toString() != ""){
+        if(binding.correoid.text.toString() != "" && binding.contrasenaId.text.toString() != ""){
             esValido = true
         }
-        if(correoid.text.toString().length >= 8){
+        if(binding.correoid.text.toString().length >= 8){
             esValido = false
             Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
         }
-        if(contrasenaId.text.toString().length >= 6){
+        if(binding.contrasenaId.text.toString().length >= 6){
             esValido = false
             Toast.makeText(applicationContext, "Contraseña no valida", Toast.LENGTH_SHORT).show()
         }
@@ -183,20 +171,13 @@ class RegistroActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        outLayout2.visibility = View.VISIBLE
+        binding.outLayout2.visibility = View.VISIBLE
     }
-
-
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
         miBoton.setBackgroundColor(Color.parseColor("#babbc8"))
-        // miBoton.setBackgroundColor(Color.BLUE)
         miBoton.setTextColor(Color.parseColor("#dbddf5"))
-        //  miBoton.shadowColor.red
         miBoton.text = titulo
-        // miBoton.isEnabled = false
         miBoton.isEnabled = false
     }
-
-
 }

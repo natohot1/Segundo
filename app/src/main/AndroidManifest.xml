@@ -17,6 +17,13 @@
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
+    <!-- Para resolver apps de cámara y otorgar permiso al URI desde Android 11+ -->
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+
     <application
         android:name="com.electros.electrocardiogramas.MyApplication"
         android:allowBackup="true"

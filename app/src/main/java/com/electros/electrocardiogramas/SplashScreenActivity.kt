@@ -3,31 +3,24 @@ package com.electros.electrocardiogramas
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import com.google.firebase.firestore.FirebaseFirestore
+import com.electros.electrocardiogramas.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySplashScreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnRegitro = findViewById<Button>(R.id.btnRegistrar)
-
-
-        btnLogin.setOnClickListener(View.OnClickListener {
+        binding.btnLogin.setOnClickListener {
             val intent = Intent(this, ActivityLogin::class.java)
             startActivity(intent)
-
-        })
-        btnRegitro.setOnClickListener(View.OnClickListener {
+        }
+        binding.btnRegistrar.setOnClickListener {
             val intent = Intent(this, RegistroActivity::class.java)
             startActivity(intent)
-
-        })
+        }
     }
-
 }

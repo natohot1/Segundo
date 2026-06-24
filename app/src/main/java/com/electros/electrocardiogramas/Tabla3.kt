@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.electros.electrocardiogramas.databinding.ActivityTabla3Binding
 import com.google.firebase.firestore.*
-import kotlinx.android.synthetic.main.activity_tabla3.faboton
 
 class Tabla3 : AppCompatActivity(), MiAdaptador2.MyOnClickListener {
+    private lateinit var binding: ActivityTabla3Binding
     private lateinit var recyclerView: RecyclerView
     private lateinit var userArrayList: ArrayList<User>
     private lateinit var userArrayList3: ArrayList<User>
@@ -21,23 +22,16 @@ class Tabla3 : AppCompatActivity(), MiAdaptador2.MyOnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tabla3)
+        binding = ActivityTabla3Binding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         title="ELECTROCARDIOGRAMAS"
-
-
 
         val objetoInt: Intent = intent
         historia = objetoInt.getStringExtra("historia").toString()
         userArrayList3 = arrayListOf()
 
-      //  userArrayList3 = midatos.userArrayList2
-
-
-
-
-
-        recyclerView = findViewById(R.id.recycler3)
+        recyclerView = binding.recycler3
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
@@ -46,6 +40,11 @@ class Tabla3 : AppCompatActivity(), MiAdaptador2.MyOnClickListener {
         miAdaptador2 = MiAdaptador2(userArrayList,this@Tabla3)
 
         recyclerView.adapter = miAdaptador2
+
+        binding.faboton.setOnClickListener{
+            val inte2 = Intent(this, SegundaActivity::class.java)
+            startActivity(inte2)
+        }
 
         EventChangeListener(historia!!)
     }
@@ -72,14 +71,6 @@ class Tabla3 : AppCompatActivity(), MiAdaptador2.MyOnClickListener {
                   volver()
               }
           }
-
-        faboton.setOnClickListener{
-            val inte2 = Intent(this, SegundaActivity::class.java)
-
-            startActivity(inte2)
-        }
-
-
     }
     fun volver(){
         Toast.makeText(this, "ERROR NO HAY DATOS", Toast.LENGTH_LONG).show()
