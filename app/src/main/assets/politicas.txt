@@ -1,0 +1,39 @@
+POLÍTICA DE PRIVACIDAD - ECG+
+Última actualización: 24 de mayo de 2024
+
+La presente Política de Privacidad establece los términos en que ECG+ (en adelante "la Aplicación"), vinculada a la Clínica Perpetuo Socorro, usa y protege la información que es proporcionada por sus usuarios al momento de utilizarla.
+
+1. INFORMACIÓN RECOGIDA
+Nuestra aplicación podrá recoger información personal como:
+* Datos de Autenticación: Correo electrónico y contraseña (gestionados a través de Firebase Authentication).
+* Información del Paciente: Nombre del paciente y Número de Historia Clínica.
+* Archivos Multimedia: Fotografías de electrocardiogramas tomadas con la cámara del dispositivo.
+
+2. USO DE LA INFORMACIÓN RECOGIDA
+La Aplicación utiliza la información con el fin de proporcionar el mejor servicio posible, particularmente para:
+* Mantener un registro de usuarios y pacientes.
+* Almacenar de forma segura las imágenes de electrocardiogramas en la nube para su posterior consulta médica.
+* Permitir la gestión y eliminación de registros por parte del usuario autorizado.
+
+3. SERVICIOS DE TERCEROS
+Utilizamos servicios de Google Firebase para el funcionamiento de la app:
+* Firebase Auth: Para el inicio de sesión seguro.
+* Cloud Firestore: Para almacenar los datos de texto de los pacientes.
+* Cloud Storage: Para el almacenamiento seguro de las imágenes de ECG.
+* Firebase Analytics: Para entender el rendimiento de la aplicación.
+Google podrá tratar esta información conforme a sus propias políticas de privacidad.
+
+4. PERMISOS DEL DISPOSITIVO
+Para funcionar correctamente, la app solicita:
+* Cámara: Para capturar las imágenes de los electrocardiogramas.
+* Almacenamiento: Para guardar temporalmente las capturas antes de ser enviadas a la nube.
+* Internet: Para sincronizar los datos con la base de datos de Firebase.
+
+5. SEGURIDAD Y CONTROL DE SU INFORMACIÓN
+ECG+ está comprometida con la seguridad de su información. Utilizamos los protocolos de seguridad de Firebase para asegurar que el acceso no autorizado sea evitado.
+En cualquier momento usted puede:
+* Consultar sus datos guardados en la sección "PREVIOS".
+* Eliminar su registro y toda la información asociada a través de la función "ELIMINAR REGISTRO".
+
+6. CONSENTIMIENTO
+Al utilizar esta aplicación, usted acepta el procesamiento de su información en los términos de esta Política de Privacidad.
