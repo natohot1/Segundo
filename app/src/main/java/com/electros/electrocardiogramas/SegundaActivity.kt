@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -57,7 +56,6 @@ class SegundaActivity : AppCompatActivity() {
 
         filename = UUID.randomUUID().toString()
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         iniciarComponentes()
 
         binding.btnFotos.setOnClickListener {
@@ -96,15 +94,13 @@ class SegundaActivity : AppCompatActivity() {
         binding.btnSalir.setOnClickListener {
             val prefs: SharedPreferences.Editor? = getSharedPreferences(("mipreferencia"), Context.MODE_PRIVATE).edit()
             prefs?.clear()
+            prefs?.apply()
 
-            //FirebaseAuth.getInstance().signOut()
-            AuthUI.getInstance().signOut(this)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "HAS SALIDO DE ECG+", Toast.LENGTH_LONG).show()
-                    salirInicio()
-                    finish()
-                }
-
+            com.google.firebase.auth.FirebaseAuth.getInstance().signOut()
+            
+            Toast.makeText(this, "HAS CERRADO SESIÓN", Toast.LENGTH_LONG).show()
+            salirInicio()
+            finish()
         }
 
 
@@ -151,7 +147,7 @@ class SegundaActivity : AppCompatActivity() {
         configurarBotones(binding.btnFotos, "FOTOGRAFIAR")
         configurarBotones(binding.btnGuardados,"PREVIOS")
         configurarBotones(binding.btnGuardar,"GUARDAR DATOS")
-        configurarBotones(binding.btnSalir,"SALIR")
+        configurarBotones(binding.btnSalir,"CERRAR SESIÓN")
         binding.imagenPrimera.setImageResource(R.drawable.ecgnegro)
         binding.imagenSegunda.setImageResource(R.drawable.ecgnegro)
     }
@@ -447,8 +443,6 @@ class SegundaActivity : AppCompatActivity() {
     }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
-        miBoton.setBackgroundColor(Color.BLUE)
-        miBoton.setTextColor(Color.WHITE)
         miBoton.text = titulo
     }
 

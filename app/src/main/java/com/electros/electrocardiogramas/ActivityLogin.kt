@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -31,91 +29,68 @@ class ActivityLogin : AppCompatActivity() {
         title="PERPETUO SOCORRO"
 
         autentication = FirebaseAuth.getInstance()
-        configurarBotones(binding.buttonInicio,"INICIAR")
 
+        configurarBotones(binding.buttonLogin, "LOGIN")
+        configurarBotones(binding.buttonNuevoLogin, "ELIMINAR REGISTRO")
 
-        binding.correoid.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                Log.i("begoskndksjnj", "not overide")
+        binding.buttonLogin.setOnClickListener {
+            val email = binding.correoid.text.toString().trim()
+            val pass = binding.contrasenaId.text.toString().trim()
+            if (validar()) {
+                inicio(email, pass)
             }
+        }
+
+        binding.buttonNuevoLogin.setOnClickListener {
+            val email = binding.correoid.text.toString()
+            if (email.isNotEmpty()) {
+                val intent = Intent(this, EliminarActivity::class.java)
+                intent.putExtra("email", email)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Por favor, introduce un correo", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(binding.correoid.length() > 8 && binding.contrasenaId.length() >5){
-                    binding.buttonInicio.setBackgroundColor(Color.parseColor("#0c18f1"))
-                    binding.buttonInicio.setTextColor(Color.parseColor("#ffffff"))
-                    binding.buttonInicio.isEnabled = true
-                }
-                else{
-                    binding.buttonInicio.setBackgroundColor(Color.parseColor("#babbc8"))
-                    binding.buttonInicio.setTextColor(Color.parseColor("#dbddf5"))
-                    binding.buttonInicio.isEnabled = false
-                }
+                validarBotones()
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                Log.i("begoskndksjnj", "not overide")
-            }
+            override fun afterTextChanged(s: Editable?) {}
+        }
 
-        })
-
-        binding.contrasenaId.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                Log.i("begoskndksjnj", "not overide")
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(binding.correoid.length() > 8 && binding.contrasenaId.length() >5){
-                    binding.buttonInicio.setBackgroundColor(Color.parseColor("#0c18f1"))
-                    binding.buttonInicio.setTextColor(Color.parseColor("#ffffff"))
-                    binding.buttonInicio.isEnabled = true
-                }
-                else{
-                    binding.buttonInicio.setBackgroundColor(Color.parseColor("#babbc8"))
-                    binding.buttonInicio.setTextColor(Color.parseColor("#dbddf5"))
-                    binding.buttonInicio.isEnabled = false
-                }
-
-                Log.i("begoskndksjnj", "not overide")
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                Log.i("begoskndksjnj", "not overide")
-            }
-
-        })
+        binding.correoid.addTextChangedListener(textWatcher)
+        binding.contrasenaId.addTextChangedListener(textWatcher)
 
         session()
 
-        binding.buttonInicio.setOnClickListener {
-            if(binding.correoid.text.toString() != "" && binding.contrasenaId.text.toString() != "") {
-                val email = binding.correoid.text.toString().trim()
-                val pasword = binding.contrasenaId.text.toString().trim()
-                inicio(email, pasword)
-            }
-        }
+    }
 
+    private fun validarBotones() {
+        val email = binding.correoid.text.toString()
+        val pass = binding.contrasenaId.text.toString()
+
+        // Reglas para Login
+        binding.buttonLogin.isEnabled = email.contains("@") && email.length > 8 && pass.length >= 6
+
+        // Reglas para Eliminar
+        binding.buttonNuevoLogin.isEnabled = email.length > 8
     }
 
     private fun validar(): Boolean {
-        if(binding.contrasenaId.length() > 0 && binding.correoid.length() >0){
-        }else{
-        }
-
         var esValido = true
-        if(binding.correoid.text.toString().contains("@")){
-            esValido = true
-        }
-        if(binding.correoid.text.toString() != "" && binding.contrasenaId.text.toString() != ""){
-            esValido = true
-        }
-        if(binding.correoid.text.toString().length >= 8){
+        val email = binding.correoid.text.toString()
+        val pass = binding.contrasenaId.text.toString()
+
+        if (!email.contains("@") || email.length <= 8) {
             esValido = false
-            Toast.makeText(applicationContext, "Correo no valido", Toast.LENGTH_SHORT).show()
-        }
-        if(binding.contrasenaId.text.toString().length >= 6){
+            Toast.makeText(applicationContext, "Correo no valido (debe contener @ y > 8 caracteres)", Toast.LENGTH_SHORT).show()
+        } else if (pass.length < 6) {
             esValido = false
-            Toast.makeText(applicationContext, "Contraseña no valida", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Contraseña no valida (mínimo 6 caracteres)", Toast.LENGTH_SHORT).show()
         }
 
         return esValido
@@ -170,8 +145,6 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun configurarBotones(miBoton: Button, titulo: String) {
-        miBoton.setBackgroundColor(Color.parseColor("#babbc8"))
-        miBoton.setTextColor(Color.parseColor("#dbddf5"))
         miBoton.text = titulo
         miBoton.isEnabled = false
     }

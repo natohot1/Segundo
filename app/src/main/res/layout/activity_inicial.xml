@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A2DEF"
+    android:background="#00BCD4"
     tools:context="com.electros.electrocardiogramas.ActivityInicial">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

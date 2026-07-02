@@ -33,6 +33,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Segundo">
         <activity
+            android:name="com.electros.electrocardiogramas.EliminarActivity"
+            android:exported="false" />
+        <activity
             android:name="com.electros.electrocardiogramas.RegistroActivity"
             android:exported="false" />
         <activity

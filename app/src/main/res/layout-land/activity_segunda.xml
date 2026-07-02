@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    tools:context="com.electros.electrocardiogramas.SegundaActivity">
+
+    <View
+        android:id="@+id/leftBackground"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/background_split_light"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineMid"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineMid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineMid"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/editHistoria"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:hint="@string/historia"
+                android:textColorHint="@color/colorHint"
+                android:textColor="@color/text_primary"
+                android:inputType="number"
+                android:maxLength="8"
+                app:layout_constraintEnd_toStartOf="@+id/editNombre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editNombre"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:hint="@string/nombre"
+                android:textColorHint="@color/colorHint"
+                android:textColor="@color/text_primary"
+                android:inputType="textCapCharacters"
+                android:importantForAutofill="no"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/editHistoria"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btnFotos"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/boton_personal"
+                app:backgroundTint="@null"
+                android:text="@string/fotografiar"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/editHistoria" />
+
+            <Button
+                android:id="@+id/btnGuardados"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/boton_personal"
+                app:backgroundTint="@null"
+                android:text="GUARDADOS"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/btnFotos" />
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/boton_personal"
+                app:backgroundTint="@null"
+                android:text="GUARDAR"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/btnGuardados" />
+
+            <Button
+                android:id="@+id/btnSalir"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/boton_personal"
+                app:backgroundTint="@null"
+                android:text="CERRAR SESIÓN"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/btnGuardar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/imagenPrimera"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/imagenSegunda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guidelineMid"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ecgnegro" />
+
+    <ImageView
+        android:id="@+id/imagenSegunda"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guidelineMid"
+        app:layout_constraintTop_toBottomOf="@+id/imagenPrimera"
+        tools:srcCompat="@drawable/ecgnegro" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

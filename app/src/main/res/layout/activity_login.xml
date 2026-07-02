@@ -5,7 +5,7 @@
     android:id="@+id/outLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0978C6"
+    android:background="@color/background_light"
     tools:context="com.electros.electrocardiogramas.ActivityLogin">
 
 
@@ -15,10 +15,10 @@
         android:layout_height="48dp"
         android:ems="10"
         android:hint="@string/email"
+        android:textColorHint="@color/colorHint"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        android:textColor="@color/white"
-        android:textColorHint="#80D3C6C6"
+        android:textColor="@color/text_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
@@ -34,28 +34,14 @@
         android:hint="@string/contraseña"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColor="@color/white"
-        android:textColorHint="#80D3C6C6"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/colorHint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/correoid"
         app:layout_constraintVertical_bias="0.054" />
-
-    <Button
-        android:id="@+id/buttonInicio"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:text="INICIAR"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline14"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/contrasenaId"
-        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -83,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ELECTROCARDIOGRAMAS"
-        android:textColor="@color/white"
+        android:textColor="@color/primary_medical"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/correoid"
@@ -99,13 +85,38 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.8" />
 
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:background="@drawable/boton_personal"
+        app:backgroundTint="@null"
+        android:text="LOGIN"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
+    <Button
+        android:id="@+id/buttonNuevoLogin"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/boton_personal"
+        app:backgroundTint="@null"
+        android:text="ELIMINAR REGISTRO"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="INICIAR SESION"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/accent_medical"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/correoid"
